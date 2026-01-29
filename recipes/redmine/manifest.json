@@ -1,2 +1,11 @@
-{}
-
+{
+  "schema_version": "1",
+  "id": "redmine",
+  "version": "0.1.0",
+  "name": "Redmine",
+  "summary": "Redmine backend integration.",
+  "description": "Enables Redmine task backend support and sync commands.",
+  "agents": [],
+  "tools": [],
+  "scenarios": []
+}

@@ -1,2 +1,11 @@
-{}
-
+{
+  "schema_version": "1",
+  "id": "viewer",
+  "version": "0.1.0",
+  "name": "Viewer",
+  "summary": "Local viewer for task artifacts.",
+  "description": "Adds a lightweight viewer for task artifacts and reports.",
+  "agents": [],
+  "tools": [],
+  "scenarios": []
+}

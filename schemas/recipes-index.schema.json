@@ -1,2 +1,39 @@
-{}
-
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Recipes Index",
+  "type": "object",
+  "required": ["schema_version", "recipes"],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "recipes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "summary", "versions"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "summary": { "type": "string", "minLength": 1 },
+          "description": { "type": "string" },
+          "versions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["version", "url", "sha256"],
+              "properties": {
+                "version": { "type": "string", "minLength": 1 },
+                "url": { "type": "string", "minLength": 1 },
+                "sha256": { "type": "string", "minLength": 1 },
+                "min_agentplane_version": { "type": "string" },
+                "tags": { "type": "array", "items": { "type": "string" } }
+              },
+              "additionalProperties": true
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}
