@@ -6,6 +6,19 @@
   "summary": "Redmine backend integration.",
   "description": "Enables Redmine task backend support and sync commands.",
   "agents": [],
-  "tools": [],
-  "scenarios": []
+  "tools": [
+    {
+      "id": "install-backend",
+      "summary": "Install the Redmine backend config template.",
+      "runtime": "bash",
+      "entrypoint": "tools/install-backend.sh",
+      "permissions": ["fs.write"]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "install-backend",
+      "summary": "Install the Redmine backend config template."
+    }
+  ]
 }

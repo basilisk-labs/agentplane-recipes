@@ -1,0 +1,12 @@
+{
+  "schema_version": "1",
+  "id": "install-backend",
+  "summary": "Install the Redmine backend config template.",
+  "description": "Copies a starter backend.json into .agentplane/backends/redmine.",
+  "goal": "Prepare the repo for Redmine backend sync by installing the backend config template.",
+  "inputs": [],
+  "outputs": [],
+  "steps": [
+    { "tool": "install-backend", "args": [] }
+  ]
+}
