@@ -1,4 +1,17 @@
 {
   "schema_version": 1,
-  "recipes": []
+  "recipes": [
+    {
+      "id": "viewer",
+      "summary": "Local viewer for task artifacts.",
+      "description": "Adds a lightweight viewer for task artifacts and reports.",
+      "versions": [
+        {
+          "version": "0.1.0",
+          "url": "https://github.com/basilisk-labs/agentplane-recipes/releases/download/v0.1.0/viewer-0.1.0.tar.gz",
+          "sha256": ""
+        }
+      ]
+    }
+  ]
 }

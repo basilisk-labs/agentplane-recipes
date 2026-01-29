@@ -6,6 +6,19 @@
   "summary": "Local viewer for task artifacts.",
   "description": "Adds a lightweight viewer for task artifacts and reports.",
   "agents": [],
-  "tools": [],
-  "scenarios": []
+  "tools": [
+    {
+      "id": "viewer-server",
+      "summary": "Serve tasks.html with task data API.",
+      "runtime": "node",
+      "entrypoint": "tools/viewer-server.mjs",
+      "permissions": ["network", "fs.read"]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "viewer",
+      "summary": "Launch the local tasks viewer."
+    }
+  ]
 }

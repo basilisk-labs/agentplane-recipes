@@ -1,0 +1,16 @@
+{
+  "schema_version": "1",
+  "id": "viewer",
+  "summary": "Launch the local tasks viewer.",
+  "description": "Starts a local HTTP server to explore .agentplane/tasks.json.",
+  "goal": "Serve the tasks viewer UI locally.",
+  "inputs": [
+    { "name": "port", "type": "number", "optional": true }
+  ],
+  "outputs": [
+    { "name": "url", "type": "string" }
+  ],
+  "steps": [
+    { "tool": "viewer-server", "args": [] }
+  ]
+}
