@@ -1,11 +1,37 @@
 #!/usr/bin/env node
 
+import fs from "node:fs";
+import path from "node:path";
+
 const args = process.argv.slice(2);
 const command = args[0];
 
 function usage() {
   return "Usage: dokploy <list-projects|deploy> [--application-id <id>]";
 }
+
+function loadDotEnv() {
+  const envPath = path.resolve(process.cwd(), ".env");
+  if (!fs.existsSync(envPath)) return;
+  const raw = fs.readFileSync(envPath, "utf8");
+  for (const line of raw.split(/\r?\n/u)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const eqIndex = trimmed.indexOf("=");
+    if (eqIndex <= 0) continue;
+    const key = trimmed.slice(0, eqIndex).trim();
+    let value = trimmed.slice(eqIndex + 1).trim();
+    if (!key) continue;
+    if ((value.startsWith("\"") && value.endsWith("\"")) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+    }
+    if (process.env[key] === undefined) {
+      process.env[key] = value;
+    }
+  }
+}
+
+loadDotEnv();
 
 const endpointRaw =
   process.env.DOKPLOY_API_BASE ||
