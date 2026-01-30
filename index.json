@@ -24,6 +24,30 @@
           "sha256": ""
         }
       ]
+    },
+    {
+      "id": "github-sync",
+      "summary": "GitHub task sync automation.",
+      "description": "Installs a GitHub Actions workflow that syncs .agent-plane/tasks.json to Issues/Projects.",
+      "versions": [
+        {
+          "version": "0.1.0",
+          "url": "https://github.com/basilisk-labs/agentplane-recipes/releases/download/v0.1.0/github-sync-0.1.0.tar.gz",
+          "sha256": ""
+        }
+      ]
+    },
+    {
+      "id": "dokploy",
+      "summary": "Dokploy API automation.",
+      "description": "CLI helpers for listing projects and deploying applications via Dokploy API.",
+      "versions": [
+        {
+          "version": "0.1.0",
+          "url": "https://github.com/basilisk-labs/agentplane-recipes/releases/download/v0.1.0/dokploy-0.1.0.tar.gz",
+          "sha256": ""
+        }
+      ]
     }
   ]
 }

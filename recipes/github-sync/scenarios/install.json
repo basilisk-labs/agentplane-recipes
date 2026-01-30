@@ -1,0 +1,12 @@
+{
+  "schema_version": "1",
+  "id": "install",
+  "summary": "Install GitHub sync automation.",
+  "description": "Copies the sync script and workflow into the repo and pre-fills owner/repo/project from .env when available.",
+  "goal": "Enable automatic sync from .agent-plane/tasks.json to GitHub Issues.",
+  "inputs": [],
+  "outputs": [],
+  "steps": [
+    { "tool": "install-github-sync", "args": [] }
+  ]
+}

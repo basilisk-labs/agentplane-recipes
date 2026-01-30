@@ -1,0 +1,12 @@
+{
+  "schema_version": "1",
+  "id": "list-projects",
+  "summary": "List Dokploy projects.",
+  "description": "Fetches the list of projects from Dokploy using the configured API endpoint.",
+  "goal": "Validate API connectivity and return project metadata.",
+  "inputs": [],
+  "outputs": [],
+  "steps": [
+    { "tool": "dokploy", "args": ["list-projects"] }
+  ]
+}

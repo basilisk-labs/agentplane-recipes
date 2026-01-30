@@ -1,0 +1,12 @@
+{
+  "schema_version": "1",
+  "id": "deploy-application",
+  "summary": "Deploy a Dokploy application.",
+  "description": "Triggers a deployment for the configured application ID via the Dokploy API.",
+  "goal": "Kick off a deployment for the target application.",
+  "inputs": [],
+  "outputs": [],
+  "steps": [
+    { "tool": "dokploy", "args": ["deploy"] }
+  ]
+}

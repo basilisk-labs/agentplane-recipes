@@ -1,0 +1,28 @@
+{
+  "schema_version": "1",
+  "id": "dokploy",
+  "version": "0.1.0",
+  "name": "Dokploy",
+  "summary": "Dokploy API automation.",
+  "description": "Provides CLI helpers for listing Dokploy projects and deploying applications via the API.",
+  "agents": [],
+  "tools": [
+    {
+      "id": "dokploy",
+      "summary": "Invoke Dokploy API commands.",
+      "runtime": "node",
+      "entrypoint": "tools/dokploy.mjs",
+      "permissions": ["network"]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "list-projects",
+      "summary": "List Dokploy projects."
+    },
+    {
+      "id": "deploy-application",
+      "summary": "Deploy a Dokploy application."
+    }
+  ]
+}
