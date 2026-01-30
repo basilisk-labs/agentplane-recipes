@@ -2,14 +2,14 @@
   "schema_version": 1,
   "recipes": [
     {
-      "id": "viewer",
-      "summary": "Local viewer for task artifacts.",
-      "description": "Adds a lightweight viewer for task artifacts and reports.",
+      "id": "dokploy",
+      "summary": "Dokploy API automation.",
+      "description": "Provides CLI helpers for listing Dokploy projects and deploying applications via the API.",
       "versions": [
         {
           "version": "0.1.0",
-          "url": "https://github.com/basilisk-labs/agentplane-recipes/releases/download/v0.1.0/viewer-0.1.0.tar.gz",
-          "sha256": ""
+          "url": "https://github.com/basilisk-labs/agentplane-recipes/releases/download/v0.1.0/dokploy-0.1.0.tar.gz",
+          "sha256": "234e948529ad23d84759cf7c4ec96a543e33d1703e58f544e1e2d0eade44c294"
         }
       ]
     },
@@ -21,31 +21,31 @@
         {
           "version": "0.1.0",
           "url": "https://github.com/basilisk-labs/agentplane-recipes/releases/download/v0.1.0/redmine-0.1.0.tar.gz",
-          "sha256": ""
+          "sha256": "c30e0e7bcff1db46c3ea898b3b95ed96de654d204904a8d4f068d79855b4b46e"
         }
       ]
     },
     {
       "id": "github-sync",
-      "summary": "GitHub task sync automation.",
-      "description": "Installs a GitHub Actions workflow that syncs .agent-plane/tasks.json to Issues/Projects.",
+      "summary": "Sync tasks.json to GitHub Issues and Projects.",
+      "description": "Installs the GitHub Actions workflow and sync script that mirror .agent-plane/tasks.json into GitHub Issues/ProjectV2.",
       "versions": [
         {
           "version": "0.1.0",
           "url": "https://github.com/basilisk-labs/agentplane-recipes/releases/download/v0.1.0/github-sync-0.1.0.tar.gz",
-          "sha256": ""
+          "sha256": "a4cffd239d14c4026b83450f16c7c7ebdab0800956b8f98d28fc6a0abe8370fa"
         }
       ]
     },
     {
-      "id": "dokploy",
-      "summary": "Dokploy API automation.",
-      "description": "CLI helpers for listing projects and deploying applications via Dokploy API.",
+      "id": "viewer",
+      "summary": "Local viewer for task artifacts.",
+      "description": "Adds a lightweight viewer for task artifacts and reports.",
       "versions": [
         {
           "version": "0.1.0",
-          "url": "https://github.com/basilisk-labs/agentplane-recipes/releases/download/v0.1.0/dokploy-0.1.0.tar.gz",
-          "sha256": ""
+          "url": "https://github.com/basilisk-labs/agentplane-recipes/releases/download/v0.1.0/viewer-0.1.0.tar.gz",
+          "sha256": "003d065295de4b5cd519133985384eb930005b8271c221b18c96ab353bb74888"
         }
       ]
     }
