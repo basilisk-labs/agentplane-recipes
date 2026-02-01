@@ -9,7 +9,6 @@ index.json
 schemas/
 recipes/
 scripts/
-.github/workflows/
 ```
 
 ## Release workflow

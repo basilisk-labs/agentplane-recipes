@@ -26,18 +26,6 @@
       ]
     },
     {
-      "id": "github-sync",
-      "summary": "Sync tasks.json to GitHub Issues and Projects.",
-      "description": "Installs the GitHub Actions workflow and sync script that mirror .agent-plane/tasks.json into GitHub Issues/ProjectV2.",
-      "versions": [
-        {
-          "version": "0.1.0",
-          "url": "https://github.com/basilisk-labs/agentplane-recipes/releases/download/v0.1.0/github-sync-0.1.0.tar.gz",
-          "sha256": "a4cffd239d14c4026b83450f16c7c7ebdab0800956b8f98d28fc6a0abe8370fa"
-        }
-      ]
-    },
-    {
       "id": "viewer",
       "summary": "Local viewer for task artifacts.",
       "description": "Adds a lightweight viewer for task artifacts and reports.",
