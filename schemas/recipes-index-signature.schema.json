@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "type": "object",
+  "required": ["schema_version", "key_id", "signature"],
+  "properties": {
+    "schema_version": { "type": "integer", "enum": [1] },
+    "key_id": { "type": "string", "minLength": 1 },
+    "signature": { "type": "string", "minLength": 1 },
+    "algorithm": { "type": "string" }
+  },
+  "additionalProperties": false
+}
