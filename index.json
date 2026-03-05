@@ -14,18 +14,6 @@
       ]
     },
     {
-      "id": "redmine",
-      "summary": "Redmine backend integration.",
-      "description": "Enables Redmine task backend support and sync commands.",
-      "versions": [
-        {
-          "version": "0.1.0",
-          "url": "https://github.com/basilisk-labs/agentplane-recipes/releases/download/v0.1.0/redmine-0.1.0.tar.gz",
-          "sha256": "c30e0e7bcff1db46c3ea898b3b95ed96de654d204904a8d4f068d79855b4b46e"
-        }
-      ]
-    },
-    {
       "id": "viewer",
       "summary": "Local viewer for task artifacts.",
       "description": "Adds a lightweight viewer for task artifacts and reports.",
