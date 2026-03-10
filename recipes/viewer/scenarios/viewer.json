@@ -8,7 +8,7 @@
     { "name": "port", "type": "number", "optional": true }
   ],
   "outputs": [
-    { "name": "url", "type": "string" }
+    { "name": "viewer_url", "type": "string" }
   ],
   "steps": [
     { "tool": "viewer-server", "args": [] }

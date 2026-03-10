@@ -5,7 +5,33 @@
   "name": "Viewer",
   "summary": "Local viewer for task artifacts.",
   "description": "Adds a lightweight viewer for task artifacts and reports.",
-  "agents": [],
+  "compatibility": {
+    "min_agentplane_version": "0.3.5",
+    "manifest_api_version": "1",
+    "scenario_api_version": "1",
+    "runtime_api_version": "1",
+    "platforms": ["darwin", "linux"],
+    "repo_types": ["generic"]
+  },
+  "skills": [
+    {
+      "id": "viewer-analysis",
+      "summary": "Decides when the local viewer should be used.",
+      "kind": "agent-skill",
+      "file": "skills/viewer-analysis.json"
+    }
+  ],
+  "agents": [
+    {
+      "id": "viewer-operator",
+      "display_name": "Viewer Operator",
+      "role": "executor",
+      "summary": "Owns the viewer recipe orchestration inside the bundle.",
+      "skills": ["viewer-analysis"],
+      "tools": ["viewer-server"],
+      "file": "agents/viewer-operator.json"
+    }
+  ],
   "tools": [
     {
       "id": "viewer-server",
@@ -18,7 +44,31 @@
   "scenarios": [
     {
       "id": "viewer",
-      "summary": "Launch the local tasks viewer."
+      "name": "Launch Viewer",
+      "summary": "Prepare the local task viewer run plan.",
+      "description": "Expose the local viewer scenario through manifest metadata without requiring orchestration internals.",
+      "use_when": [
+        "Need to inspect task artifacts in a browser.",
+        "Need a local preview before editing task data."
+      ],
+      "avoid_when": [
+        "A local network listener is not allowed.",
+        "The environment cannot expose a local HTTP port."
+      ],
+      "required_inputs": ["port"],
+      "outputs": ["viewer_url"],
+      "permissions": ["network", "fs.read"],
+      "artifacts": ["assets/tasks.html"],
+      "agents_involved": ["viewer-operator"],
+      "skills_used": ["viewer-analysis"],
+      "tools_used": ["viewer-server"],
+      "run_profile": {
+        "mode": "analysis",
+        "sandbox": "workspace-write",
+        "network": true,
+        "expected_exit_contract": "viewer_url"
+      },
+      "file": "scenarios/viewer.json"
     }
   ]
 }

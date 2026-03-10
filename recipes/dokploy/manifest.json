@@ -5,7 +5,33 @@
   "name": "Dokploy",
   "summary": "Dokploy API automation.",
   "description": "Provides CLI helpers for listing Dokploy projects and deploying applications via the API.",
-  "agents": [],
+  "compatibility": {
+    "min_agentplane_version": "0.3.5",
+    "manifest_api_version": "1",
+    "scenario_api_version": "1",
+    "runtime_api_version": "1",
+    "platforms": ["darwin", "linux"],
+    "repo_types": ["generic"]
+  },
+  "skills": [
+    {
+      "id": "dokploy-analysis",
+      "summary": "Assess whether a Dokploy API workflow should be selected.",
+      "kind": "agent-skill",
+      "file": "skills/dokploy-analysis.json"
+    }
+  ],
+  "agents": [
+    {
+      "id": "dokploy-operator",
+      "display_name": "Dokploy Operator",
+      "role": "executor",
+      "summary": "Owns Dokploy scenario orchestration inside the recipe bundle.",
+      "skills": ["dokploy-analysis"],
+      "tools": ["dokploy"],
+      "file": "agents/dokploy-operator.json"
+    }
+  ],
   "tools": [
     {
       "id": "dokploy",
@@ -18,11 +44,59 @@
   "scenarios": [
     {
       "id": "list-projects",
-      "summary": "List Dokploy projects."
+      "name": "List Projects",
+      "summary": "Prepare a run plan for listing Dokploy projects.",
+      "description": "Expose a low-risk Dokploy connectivity scenario through manifest metadata.",
+      "use_when": [
+        "Need to validate Dokploy connectivity.",
+        "Need to inspect available projects before a deployment."
+      ],
+      "avoid_when": [
+        "Dokploy credentials are unavailable."
+      ],
+      "required_inputs": [],
+      "outputs": ["projects"],
+      "permissions": ["network"],
+      "artifacts": [],
+      "agents_involved": ["dokploy-operator"],
+      "skills_used": ["dokploy-analysis"],
+      "tools_used": ["dokploy"],
+      "run_profile": {
+        "mode": "analysis",
+        "sandbox": "workspace-write",
+        "network": true,
+        "expected_exit_contract": "projects"
+      },
+      "file": "scenarios/list-projects.json"
     },
     {
       "id": "deploy-application",
-      "summary": "Deploy a Dokploy application."
+      "name": "Deploy Application",
+      "summary": "Prepare a run plan for deploying an application through Dokploy.",
+      "description": "Expose a deployment-oriented Dokploy scenario without exporting recipe internals into the project.",
+      "use_when": [
+        "Need to deploy an application through Dokploy.",
+        "Need to review deployment permissions before execution."
+      ],
+      "avoid_when": [
+        "Dokploy credentials are unavailable.",
+        "A human deployment approval has not been granted."
+      ],
+      "required_inputs": ["application_id"],
+      "outputs": ["deployment_status"],
+      "permissions": ["network"],
+      "artifacts": [],
+      "agents_involved": ["dokploy-operator"],
+      "skills_used": ["dokploy-analysis"],
+      "tools_used": ["dokploy"],
+      "run_profile": {
+        "mode": "apply",
+        "sandbox": "workspace-write",
+        "network": true,
+        "requires_human_approval": true,
+        "expected_exit_contract": "deployment_status"
+      },
+      "file": "scenarios/deploy-application.json"
     }
   ]
 }

@@ -1,0 +1,5 @@
+{
+  "id": "dokploy-operator",
+  "role": "executor",
+  "summary": "Local recipe actor responsible for Dokploy-oriented scenarios."
+}

@@ -1,0 +1,5 @@
+{
+  "id": "viewer-operator",
+  "role": "executor",
+  "summary": "Local recipe actor responsible for the viewer scenario."
+}

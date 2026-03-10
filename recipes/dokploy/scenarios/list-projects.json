@@ -5,7 +5,9 @@
   "description": "Fetches the list of projects from Dokploy using the configured API endpoint.",
   "goal": "Validate API connectivity and return project metadata.",
   "inputs": [],
-  "outputs": [],
+  "outputs": [
+    { "name": "projects", "type": "array" }
+  ],
   "steps": [
     { "tool": "dokploy", "args": ["list-projects"] }
   ]

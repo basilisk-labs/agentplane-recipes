@@ -4,8 +4,12 @@
   "summary": "Deploy a Dokploy application.",
   "description": "Triggers a deployment for the configured application ID via the Dokploy API.",
   "goal": "Kick off a deployment for the target application.",
-  "inputs": [],
-  "outputs": [],
+  "inputs": [
+    { "name": "application_id", "type": "string" }
+  ],
+  "outputs": [
+    { "name": "deployment_status", "type": "string" }
+  ],
   "steps": [
     { "tool": "dokploy", "args": ["deploy"] }
   ]
