@@ -93,7 +93,6 @@
         "mode": "apply",
         "sandbox": "workspace-write",
         "network": true,
-        "requires_human_approval": true,
         "expected_exit_contract": "deployment_status"
       },
       "file": "scenarios/deploy-application.json"
