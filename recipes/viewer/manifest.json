@@ -1,7 +1,8 @@
 {
-  "schema_version": "1",
+  "schema_version": "2",
+  "kind": "project_overlay",
   "id": "viewer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "name": "Viewer",
   "summary": "Local viewer for task artifacts.",
   "description": "Adds a lightweight viewer for task artifacts and reports.",
@@ -18,7 +19,7 @@
       "id": "viewer-analysis",
       "summary": "Decides when the local viewer should be used.",
       "kind": "agent-skill",
-      "file": "skills/viewer-analysis.json"
+      "file": "skills/viewer-analysis.md"
     }
   ],
   "agents": [
@@ -29,7 +30,7 @@
       "summary": "Owns the viewer recipe orchestration inside the bundle.",
       "skills": ["viewer-analysis"],
       "tools": ["viewer-server"],
-      "file": "agents/viewer-operator.json"
+      "file": "agents/viewer-operator.md"
     }
   ],
   "tools": [
@@ -64,9 +65,7 @@
       "tools_used": ["viewer-server"],
       "run_profile": {
         "mode": "analysis",
-        "sandbox": "workspace-write",
-        "network": true,
-        "expected_exit_contract": "viewer_url"
+        "sandbox": "workspace-write"
       },
       "file": "scenarios/viewer.json"
     }

@@ -1,5 +1,0 @@
-{
-  "id": "dokploy-analysis",
-  "kind": "agent-skill",
-  "summary": "Analyze whether a Dokploy recipe scenario is appropriate."
-}

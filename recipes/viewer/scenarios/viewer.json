@@ -4,6 +4,22 @@
   "summary": "Launch the local tasks viewer.",
   "description": "Starts a local HTTP server to explore .agentplane/tasks.json.",
   "goal": "Serve the tasks viewer UI locally.",
+  "task_template": {
+    "title": "Launch local task viewer",
+    "description": "Prepare and launch the AgentPlane task viewer for local task artifact inspection.",
+    "owner": "CODER",
+    "priority": "normal",
+    "tags": ["viewer", "recipes"],
+    "verify": ["agentplane recipes explain viewer"],
+    "doc": {
+      "summary": "Prepare the local viewer scenario and report the generated viewer URL.",
+      "scope": "Recipe-owned viewer scenario only.",
+      "plan": "Resolve the viewer recipe, start the local viewer server, and report the URL.",
+      "verify_steps": "Confirm the viewer recipe resolves and the scenario reports viewer_url.",
+      "rollback_plan": "Stop the local viewer process and remove any temporary run artifacts.",
+      "findings": "Record port conflicts or unavailable local network listeners."
+    }
+  },
   "inputs": [
     { "name": "port", "type": "number", "optional": true }
   ],

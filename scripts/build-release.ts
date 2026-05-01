@@ -27,6 +27,9 @@ const tag =
 const repo =
   process.env.GITHUB_REPOSITORY ??
   "basilisk-labs/agentplane-recipes";
+const archiveBaseUrl =
+  process.env.RECIPE_ARCHIVE_BASE_URL ??
+  `https://raw.githubusercontent.com/${repo}/main/dist`;
 
 rmSync(distDir, { recursive: true, force: true });
 mkdirSync(distDir, { recursive: true });
@@ -42,7 +45,7 @@ for (const entry of readdirSync(recipesDir, { withFileTypes: true })) {
     stdio: "inherit",
   });
   const sha256 = createHash("sha256").update(readFileSync(outPath)).digest("hex");
-  const url = `https://github.com/${repo}/releases/download/${tag}/${filename}`;
+  const url = `${archiveBaseUrl.replace(/\/+$/u, "")}/${filename}`;
   recipes.push({
     id: manifest.id,
     summary: manifest.summary,

@@ -1,7 +1,8 @@
 {
-  "schema_version": "1",
+  "schema_version": "2",
+  "kind": "project_overlay",
   "id": "dokploy",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "name": "Dokploy",
   "summary": "Dokploy API automation.",
   "description": "Provides CLI helpers for listing Dokploy projects and deploying applications via the API.",
@@ -18,7 +19,7 @@
       "id": "dokploy-analysis",
       "summary": "Assess whether a Dokploy API workflow should be selected.",
       "kind": "agent-skill",
-      "file": "skills/dokploy-analysis.json"
+      "file": "skills/dokploy-analysis.md"
     }
   ],
   "agents": [
@@ -29,7 +30,7 @@
       "summary": "Owns Dokploy scenario orchestration inside the recipe bundle.",
       "skills": ["dokploy-analysis"],
       "tools": ["dokploy"],
-      "file": "agents/dokploy-operator.json"
+      "file": "agents/dokploy-operator.md"
     }
   ],
   "tools": [
@@ -63,9 +64,7 @@
       "tools_used": ["dokploy"],
       "run_profile": {
         "mode": "analysis",
-        "sandbox": "workspace-write",
-        "network": true,
-        "expected_exit_contract": "projects"
+        "sandbox": "workspace-write"
       },
       "file": "scenarios/list-projects.json"
     },
@@ -91,9 +90,7 @@
       "tools_used": ["dokploy"],
       "run_profile": {
         "mode": "apply",
-        "sandbox": "workspace-write",
-        "network": true,
-        "expected_exit_contract": "deployment_status"
+        "sandbox": "workspace-write"
       },
       "file": "scenarios/deploy-application.json"
     }

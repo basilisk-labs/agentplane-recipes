@@ -4,6 +4,22 @@
   "summary": "List Dokploy projects.",
   "description": "Fetches the list of projects from Dokploy using the configured API endpoint.",
   "goal": "Validate API connectivity and return project metadata.",
+  "task_template": {
+    "title": "List Dokploy projects",
+    "description": "Validate Dokploy API connectivity by listing visible projects.",
+    "owner": "CODER",
+    "priority": "normal",
+    "tags": ["dokploy", "recipes"],
+    "verify": ["agentplane recipes explain dokploy"],
+    "doc": {
+      "summary": "Use the low-risk Dokploy list-projects scenario to validate API connectivity.",
+      "scope": "Dokploy project listing only; no deployment mutation.",
+      "plan": "Resolve Dokploy credentials, invoke the list-projects scenario, and summarize returned project metadata.",
+      "verify_steps": "Confirm the dokploy recipe resolves and the scenario returns projects.",
+      "rollback_plan": "No remote mutation is expected; remove temporary run artifacts if created.",
+      "findings": "Record missing credentials, API authorization failures, or unreachable endpoint details."
+    }
+  },
   "inputs": [],
   "outputs": [
     { "name": "projects", "type": "array" }
