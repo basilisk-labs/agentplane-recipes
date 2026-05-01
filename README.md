@@ -20,6 +20,7 @@ Recipes in this repository target the current AgentPlane project-overlay runtime
 - recipe manifests use `schema_version: "2"` and `kind: "project_overlay"`;
 - recipe agent and skill assets are markdown files;
 - executable scenario files include `task_template`;
+- prompt module assets use `schema_version: 1` and recipe-owned provenance;
 - `run_profile` is limited to runner-local hints such as `mode`, `sandbox`, and
   `writes_artifacts_to`.
 
@@ -48,7 +49,7 @@ The checked-in development signature uses `key_id=2026-05-dev`. To validate it w
 provide the public key through the runtime key override:
 
 ```bash
-AGENTPLANE_RECIPES_INDEX_PUBLIC_KEYS='{"2026-05-dev":"-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAP3ckJZomz1YJ2IVjZt/Hx3jLEVtbM+L9ugvPnJClOsE=\n-----END PUBLIC KEY-----"}' \
+AGENTPLANE_RECIPES_INDEX_PUBLIC_KEYS='{"2026-05-dev":"-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAYsslSiTpetaWiCmvj7SW7ILfsWyp85Mx62ZgDBTe2Bs=\n-----END PUBLIC KEY-----"}' \
   agentplane recipes list-remote --index agentplane-recipes/index.json --refresh --yes
 ```
 

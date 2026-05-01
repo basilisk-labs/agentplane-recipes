@@ -1,0 +1,73 @@
+{
+  "schema_version": "2",
+  "kind": "project_overlay",
+  "id": "code-map",
+  "version": "0.1.0",
+  "name": "Code Map",
+  "summary": "Adds a lightweight code-map discipline to agent development work.",
+  "description": "Prompts agents to inspect or update a compact project code map before implementation, then report whether the map was used.",
+  "tags": ["code", "documentation", "agent-behavior"],
+  "compatibility": {
+    "min_agentplane_version": "0.4.0",
+    "manifest_api_version": "1",
+    "scenario_api_version": "1",
+    "runtime_api_version": "1",
+    "platforms": ["darwin", "linux"],
+    "repo_types": ["generic"]
+  },
+  "skills": [
+    {
+      "id": "code-map-discipline",
+      "summary": "Keeps a concise project code map aligned with implementation work.",
+      "file": "skills/code-map-discipline.md"
+    }
+  ],
+  "agents": [
+    {
+      "id": "code-map-operator",
+      "display_name": "Code Map Operator",
+      "role": "executor",
+      "summary": "Applies the code-map discipline during coding and verification tasks.",
+      "skills": ["code-map-discipline"],
+      "tools": [],
+      "file": "agents/code-map-operator.md"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "code-map",
+      "name": "Create or Refresh Code Map",
+      "summary": "Create or refresh a compact project code map before implementation.",
+      "description": "Use this when a task touches multiple code areas or when the repository lacks a current map of entry points, runtime surfaces, and verification commands.",
+      "use_when": [
+        "A coding task spans multiple modules or ownership boundaries.",
+        "A new agent needs a quick map of the project's runtime surfaces.",
+        "A change depends on understanding entry points and verification commands."
+      ],
+      "avoid_when": [
+        "The task is a one-line change with an obvious local owner.",
+        "The repository already has a current code map for the touched area."
+      ],
+      "required_inputs": ["target_paths"],
+      "outputs": ["code_map_path", "mapped_surfaces", "verification_commands"],
+      "permissions": ["fs.read", "fs.write"],
+      "artifacts": ["docs/code-map.md"],
+      "agents_involved": ["code-map-operator"],
+      "skills_used": ["code-map-discipline"],
+      "tools_used": [],
+      "run_profile": {
+        "mode": "analysis",
+        "sandbox": "workspace-write",
+        "writes_artifacts_to": ["docs/code-map.md"]
+      },
+      "file": "scenarios/code-map.json"
+    }
+  ],
+  "prompt_modules": [
+    {
+      "id": "code-map-discipline",
+      "summary": "Requires a lightweight code-map check before non-trivial code changes.",
+      "file": "prompt-modules/code-map-discipline.json"
+    }
+  ]
+}
