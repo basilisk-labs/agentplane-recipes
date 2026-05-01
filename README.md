@@ -39,19 +39,18 @@ release should point somewhere else, for example a GitHub Release asset base URL
 
 ### Index signature
 
-The catalog must be signed. Generate `index.json.sig` after updating `index.json`:
+The catalog must be signed before publishing. The active production key id is `2026-05`.
+The public key is checked in under `keys/`; the private key must exist only as the
+`RECIPES_INDEX_SIGNING_PRIVATE_KEY` GitHub Actions secret in this repository.
+
+For emergency local validation only, generate a signature with a temporary private-key file:
 
 ```bash
-node scripts/sign-index.ts --key /path/to/private-key.pem
+node scripts/sign-index.ts --key /path/to/private-key.pem --key-id 2026-05
 ```
 
-The checked-in development signature uses `key_id=2026-05-dev`. To validate it with AgentPlane,
-provide the public key through the runtime key override:
-
-```bash
-AGENTPLANE_RECIPES_INDEX_PUBLIC_KEYS='{"2026-05-dev":"-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAYsslSiTpetaWiCmvj7SW7ILfsWyp85Mx62ZgDBTe2Bs=\n-----END PUBLIC KEY-----"}' \
-  agentplane recipes list-remote --index agentplane-recipes/index.json --refresh --yes
-```
-
-Production releases should be re-signed with the trusted production key before publishing the remote
-catalog as the default AgentPlane recipes index.
+Do not store recipes signing private keys in `.env`, repository files, shell history, release
+artifacts, or local long-lived key paths. Rotate by creating a new Ed25519 key, storing the private
+key as the GitHub Actions secret, adding the public key to AgentPlane's trusted recipes keyring,
+signing `index.json` with the new `key_id`, and publishing a new AgentPlane CLI release before making
+that signature the default catalog signature.

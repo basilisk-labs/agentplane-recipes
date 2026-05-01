@@ -20,11 +20,26 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
 
       - name: Build release assets
         run: |
           node scripts/build-release.ts --tag "${{ github.ref_name }}"
+
+      - name: Sign recipes index
+        env:
+          RECIPES_INDEX_SIGNING_PRIVATE_KEY: ${{ secrets.RECIPES_INDEX_SIGNING_PRIVATE_KEY }}
+        run: |
+          if [ -z "$RECIPES_INDEX_SIGNING_PRIVATE_KEY" ]; then
+            echo "RECIPES_INDEX_SIGNING_PRIVATE_KEY is required" >&2
+            exit 1
+          fi
+          key_path="$RUNNER_TEMP/recipes-index-signing-key.pem"
+          trap 'rm -f "$key_path"' EXIT
+          umask 077
+          printf '%s\n' "$RECIPES_INDEX_SIGNING_PRIVATE_KEY" > "$key_path"
+          node scripts/sign-index.ts --key "$key_path" --key-id 2026-05
+          cp index.json.sig dist/index.json.sig
 
       - name: Upload release assets
         uses: softprops/action-gh-release@v2
@@ -33,3 +48,4 @@ jobs:
             dist/*.tar.gz
             dist/*.sha256
             dist/index.json
+            dist/index.json.sig
