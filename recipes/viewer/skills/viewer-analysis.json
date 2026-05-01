@@ -1,5 +1,0 @@
-{
-  "id": "viewer-analysis",
-  "kind": "agent-skill",
-  "summary": "Analyze whether the local task viewer is the correct recipe capability."
-}

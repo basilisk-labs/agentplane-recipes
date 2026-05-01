@@ -1,12 +1,19 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://agentplane.dev/schemas/recipe-manifest.schema.json",
-  "title": "agentplane recipe manifest (v1)",
+  "title": "agentplane recipe manifest",
   "type": "object",
   "additionalProperties": true,
-  "required": ["schema_version", "id", "version", "name", "summary", "description", "scenarios"],
+  "required": ["schema_version", "kind", "id", "version", "name", "summary"],
+  "anyOf": [
+    { "required": ["prompts"] },
+    { "required": ["scenarios"] },
+    { "required": ["prompt_modules"] },
+    { "required": ["prompt_mutation_sets"] }
+  ],
   "properties": {
-    "schema_version": { "type": "string", "const": "1" },
+    "schema_version": { "type": "string", "enum": ["1", "2"] },
+    "kind": { "type": "string", "const": "project_overlay" },
     "id": {
       "type": "string",
       "pattern": "^[a-z0-9][a-z0-9-]*$",
@@ -24,6 +31,27 @@
       "items": { "type": "string", "minLength": 1 }
     },
     "compatibility": { "$ref": "#/$defs/compatibility" },
+    "requires": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/conflict" }
+    },
+    "prompts": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/prompt" }
+    },
+    "validators": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/validator" }
+    },
+    "templates": {
+      "type": "object",
+      "additionalProperties": { "type": "string", "minLength": 1 }
+    },
     "skills": {
       "type": "array",
       "items": { "$ref": "#/$defs/skill" }
@@ -40,6 +68,16 @@
       "type": "array",
       "minItems": 1,
       "items": { "$ref": "#/$defs/scenario" }
+    },
+    "prompt_modules": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/prompt_module" }
+    },
+    "prompt_mutation_sets": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/prompt_mutation_set" }
     }
   },
   "$defs": {
@@ -61,10 +99,88 @@
         }
       }
     },
+    "conflict": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["recipe_id", "reason"],
+      "properties": {
+        "recipe_id": { "type": "string", "minLength": 1 },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    },
+    "when": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "task_kinds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "commands": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "tags_any": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "repo_types": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "prompt": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "surface", "file"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "surface": {
+          "type": "string",
+          "enum": [
+            "planning",
+            "execution",
+            "coding",
+            "debugging",
+            "review",
+            "verification",
+            "docs",
+            "finish"
+          ]
+        },
+        "strength": { "type": "string", "enum": ["required", "default", "advisory"] },
+        "file": { "type": "string", "minLength": 1 },
+        "order": { "type": "number" },
+        "when": { "$ref": "#/$defs/when" }
+      }
+    },
+    "validator": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "phase", "kind"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "phase": { "type": "string", "minLength": 1 },
+        "kind": {
+          "type": "string",
+          "enum": ["required_evidence", "required_command", "check_script"]
+        },
+        "required": { "type": "boolean" },
+        "evidence": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "command": { "type": "string", "minLength": 1 },
+        "runtime": { "type": "string", "enum": ["bash", "node"] },
+        "entrypoint": { "type": "string", "minLength": 1 },
+        "when": { "$ref": "#/$defs/when" }
+      }
+    },
     "skill": {
       "type": "object",
       "additionalProperties": true,
-      "required": ["id", "summary", "kind", "file"],
+      "required": ["id", "summary", "file"],
       "properties": {
         "id": { "type": "string", "minLength": 1 },
         "summary": { "type": "string", "minLength": 1, "maxLength": 200 },
@@ -116,12 +232,10 @@
       "properties": {
         "mode": { "type": "string", "minLength": 1 },
         "sandbox": { "type": "string", "minLength": 1 },
-        "network": { "type": "boolean" },
         "writes_artifacts_to": {
           "type": "array",
           "items": { "type": "string", "minLength": 1 }
-        },
-        "expected_exit_contract": { "type": "string", "minLength": 1 }
+        }
       }
     },
     "scenario": {
@@ -186,6 +300,26 @@
           "items": { "type": "string", "minLength": 1 }
         },
         "run_profile": { "$ref": "#/$defs/run_profile" },
+        "file": { "type": "string", "minLength": 1 }
+      }
+    },
+    "prompt_module": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "summary", "file"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "file": { "type": "string", "minLength": 1 }
+      }
+    },
+    "prompt_mutation_set": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "summary", "file"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1, "maxLength": 200 },
         "file": { "type": "string", "minLength": 1 }
       }
     }
