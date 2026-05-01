@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "address": {
+    "value": "recipe.code-map/policy/.agentplane/policy/body/code-map-discipline",
+    "namespace": "recipe.code-map",
+    "surface": "policy",
+    "target": ".agentplane/policy",
+    "slot": "body",
+    "name": "code-map-discipline"
+  },
+  "owner": {
+    "kind": "recipe",
+    "recipe_id": "code-map",
+    "version": "0.1.0"
+  },
+  "title": "Code Map Discipline",
+  "summary": "Require a lightweight code-map check before non-trivial code changes.",
+  "content_kind": "markdown",
+  "content": "## Code Map Discipline\n\n- Before non-trivial code edits, inspect `docs/code-map.md`, `CODEMAP.md`, or `.agentplane/code-map.md` when present.\n- If no map exists and the change touches multiple files or runtime surfaces, create a concise `docs/code-map.md`.\n- Keep the map factual: entry points, core modules, state/config boundaries, verification commands, and discovered hotspots.\n- Compare the implementation plan against the map before mutating files; update only stale or missing sections relevant to the task.\n- In the final response, state whether the map was consulted, created, or updated.\n",
+  "mutability": "append_only",
+  "merge": {
+    "mode": "append",
+    "conflict": "keep_all",
+    "precedence": 650
+  },
+  "load": {
+    "recipe_ids": ["code-map"]
+  },
+  "provenance": {
+    "source_kind": "recipe_asset",
+    "source_ref": "prompt-modules/code-map-discipline.json",
+    "fragment_id": "recipe.code-map.policy.body.code_map_discipline",
+    "recipe_id": "code-map",
+    "recipe_version": "0.1.0"
+  }
+}

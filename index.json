@@ -2,26 +2,14 @@
   "schema_version": 1,
   "recipes": [
     {
-      "id": "dokploy",
-      "summary": "Dokploy API automation.",
-      "description": "Provides CLI helpers for listing Dokploy projects and deploying applications via the API.",
+      "id": "code-map",
+      "summary": "Adds a lightweight code-map discipline to agent development work.",
+      "description": "Prompts agents to inspect or update a compact project code map before implementation, then report whether the map was used.",
       "versions": [
         {
-          "version": "0.1.1",
-          "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/dokploy-0.1.1.tar.gz",
-          "sha256": "d8cca7523bc3324b7fb1f5f3bf897e04dd3a67ae63b64e6aca0b016d0f9749a7"
-        }
-      ]
-    },
-    {
-      "id": "viewer",
-      "summary": "Local viewer for task artifacts.",
-      "description": "Adds a lightweight viewer for task artifacts and reports.",
-      "versions": [
-        {
-          "version": "0.1.1",
-          "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/viewer-0.1.1.tar.gz",
-          "sha256": "ddaf54cf3dc43dc03b51051f0edb95198d0dedb8bc37ee4afc0060a74e7ce34e"
+          "version": "0.1.0",
+          "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/code-map-0.1.0.tar.gz",
+          "sha256": "511daa565d91a2d3068a45be9353004aac8585ea0ba70de97aa199f5ea9bc6c0"
         }
       ]
     }

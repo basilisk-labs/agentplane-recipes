@@ -1,0 +1,59 @@
+{
+  "schema_version": "1",
+  "id": "code-map",
+  "goal": "Create or refresh a concise project code map before implementation.",
+  "task_template": {
+    "title": "Create or refresh project code map",
+    "description": "Map relevant entry points, modules, state/config surfaces, and verification commands before implementation work.",
+    "owner": "CODER",
+    "priority": "med",
+    "tags": ["code-map", "docs", "code"],
+    "verify": [
+      "test -f docs/code-map.md || test -f CODEMAP.md || test -f .agentplane/code-map.md"
+    ],
+    "doc": {
+      "summary": "Maintain a compact code map that agents can consult before related changes.",
+      "scope": "Only map surfaces relevant to the active development task.",
+      "plan": "Inspect existing map, inspect touched paths, update or create a compact map, then verify the map names the relevant checks.",
+      "verify_steps": "Confirm one code-map artifact exists and contains paths or commands relevant to the active task.",
+      "rollback_plan": "Revert only the code-map sections created for the active task if they prove inaccurate."
+    }
+  },
+  "inputs": {
+    "target_paths": {
+      "type": "string",
+      "required": true,
+      "description": "Paths, modules, or runtime surfaces that need to be mapped."
+    }
+  },
+  "outputs": {
+    "code_map_path": {
+      "type": "string",
+      "description": "The code-map artifact path used or created."
+    },
+    "mapped_surfaces": {
+      "type": "array",
+      "items": "string",
+      "description": "Entry points, modules, config files, or verification commands added to the map."
+    },
+    "verification_commands": {
+      "type": "array",
+      "items": "string",
+      "description": "Commands named in the map for this task."
+    }
+  },
+  "steps": [
+    {
+      "id": "find-map",
+      "summary": "Find `docs/code-map.md`, `CODEMAP.md`, or `.agentplane/code-map.md`."
+    },
+    {
+      "id": "map-surfaces",
+      "summary": "Record relevant entry points, modules, state/config surfaces, and checks."
+    },
+    {
+      "id": "sync-task",
+      "summary": "Compare the implementation plan with the map and update only stale sections."
+    }
+  ]
+}
