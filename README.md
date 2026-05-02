@@ -54,3 +54,17 @@ artifacts, or local long-lived key paths. Rotate by creating a new Ed25519 key, 
 key as the GitHub Actions secret, adding the public key to AgentPlane's trusted recipes keyring,
 signing `index.json` with the new `key_id`, and publishing a new AgentPlane CLI release before making
 that signature the default catalog signature.
+
+## Recipe metadata
+
+The catalog schema supports discoverability metadata:
+
+- `category` — broad namespace (`observability`, `integration`, etc.).
+- `tags` — fine-grained keywords for search.
+- `keywords` — package-level taxonomy.
+- `min_agentplane_version` — minimum compatible AgentPlane version.
+- `status` — publication state (`active`, `stub`, etc.).
+
+When running `node scripts/build-release.ts`, manifest metadata is copied into
+`dist/index.json` and `index.json` so package managers and humans can filter and
+evaluate recipes consistently.

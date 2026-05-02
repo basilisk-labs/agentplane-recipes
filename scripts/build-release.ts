@@ -10,6 +10,14 @@ type Manifest = {
   name: string;
   summary: string;
   description: string;
+  homepage?: string;
+  repository?: string;
+  license?: string;
+  keywords?: string[];
+  category?: string;
+  tags?: string[];
+  status?: string;
+  min_agentplane_version?: string;
 };
 
 const repoRoot = path.resolve(process.cwd(), path.dirname(new URL(import.meta.url).pathname), "..");
@@ -48,9 +56,19 @@ for (const entry of readdirSync(recipesDir, { withFileTypes: true })) {
   const url = `${archiveBaseUrl.replace(/\/+$/u, "")}/${filename}`;
   recipes.push({
     id: manifest.id,
+    version: manifest.version,
+    name: manifest.name,
     summary: manifest.summary,
     description: manifest.description,
-    versions: [{ version: manifest.version, url, sha256 }],
+    homepage: manifest.homepage,
+    repository: manifest.repository,
+    license: manifest.license,
+    keywords: manifest.keywords,
+    category: manifest.category,
+    tags: manifest.tags,
+    status: manifest.status,
+    min_agentplane_version: manifest.min_agentplane_version,
+    versions: [{ version: manifest.version, url, sha256, tags: manifest.tags }],
   });
   writeFileSync(path.join(distDir, `${filename}.sha256`), `${sha256}  ${filename}\n`);
 }

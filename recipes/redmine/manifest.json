@@ -1,0 +1,19 @@
+{
+  "schema_version": "1",
+  "id": "redmine",
+  "version": "0.1.0",
+  "name": "Redmine",
+  "summary": "Redmine backend integration.",
+  "description": "Enables Redmine task backend support and sync commands.",
+  "homepage": "https://www.redmine.org",
+  "repository": "https://github.com/basilisk-labs/agentplane-recipes",
+  "license": "MIT",
+  "keywords": ["agentplane", "redmine", "task", "integration", "recipes"],
+  "category": "integration",
+  "tags": ["redmine", "task-backend", "sync", "issue-tracker"],
+  "status": "stub",
+  "min_agentplane_version": "0.4.1",
+  "agents": [],
+  "tools": [],
+  "scenarios": []
+}

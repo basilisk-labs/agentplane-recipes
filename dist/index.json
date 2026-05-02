@@ -3,13 +3,101 @@
   "recipes": [
     {
       "id": "code-map",
+      "version": "0.1.0",
+      "name": "Code Map",
       "summary": "Adds a lightweight code-map discipline to agent development work.",
       "description": "Prompts agents to inspect or update a compact project code map before implementation, then report whether the map was used.",
+      "tags": [
+        "code",
+        "documentation",
+        "agent-behavior"
+      ],
       "versions": [
         {
           "version": "0.1.0",
           "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/code-map-0.1.0.tar.gz",
-          "sha256": "511daa565d91a2d3068a45be9353004aac8585ea0ba70de97aa199f5ea9bc6c0"
+          "sha256": "0c55ad1e5ac9d625cf6d32049bb1ccdcbbcd2d22979cca495aa34a2fa51cd0ed",
+          "tags": [
+            "code",
+            "documentation",
+            "agent-behavior"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "redmine",
+      "version": "0.1.0",
+      "name": "Redmine",
+      "summary": "Redmine backend integration.",
+      "description": "Enables Redmine task backend support and sync commands.",
+      "homepage": "https://www.redmine.org",
+      "repository": "https://github.com/basilisk-labs/agentplane-recipes",
+      "license": "MIT",
+      "keywords": [
+        "agentplane",
+        "redmine",
+        "task",
+        "integration",
+        "recipes"
+      ],
+      "category": "integration",
+      "tags": [
+        "redmine",
+        "task-backend",
+        "sync",
+        "issue-tracker"
+      ],
+      "status": "stub",
+      "min_agentplane_version": "0.4.1",
+      "versions": [
+        {
+          "version": "0.1.0",
+          "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/redmine-0.1.0.tar.gz",
+          "sha256": "366a4f9460a9b5cb3828923182db64247cc00cb1402dd7b68c46bc81af6609ea",
+          "tags": [
+            "redmine",
+            "task-backend",
+            "sync",
+            "issue-tracker"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "viewer",
+      "version": "0.1.0",
+      "name": "Viewer",
+      "summary": "Local viewer for task artifacts.",
+      "description": "Adds a lightweight viewer for task artifacts and reports.",
+      "homepage": "https://agentplane.org",
+      "repository": "https://github.com/basilisk-labs/agentplane-recipes",
+      "license": "MIT",
+      "keywords": [
+        "agentplane",
+        "task",
+        "viewer",
+        "recipes",
+        "cli"
+      ],
+      "category": "observability",
+      "tags": [
+        "viewer",
+        "local-ui",
+        "debugging"
+      ],
+      "status": "active",
+      "min_agentplane_version": "0.4.1",
+      "versions": [
+        {
+          "version": "0.1.0",
+          "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/viewer-0.1.0.tar.gz",
+          "sha256": "62421e4ea0e9691a656fe2c9827b55ab85676791e1274a95baa5aa4c90068930",
+          "tags": [
+            "viewer",
+            "local-ui",
+            "debugging"
+          ]
         }
       ]
     }
