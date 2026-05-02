@@ -21,6 +21,7 @@ Recipes in this repository target the current AgentPlane project-overlay runtime
 - recipe agent and skill assets are markdown files;
 - executable scenario files include `task_template`;
 - prompt module assets use `schema_version: 1` and recipe-owned provenance;
+- prompt mutation sets register managed graph bindings/validators instead of direct prompt-file edits;
 - `run_profile` is limited to runner-local hints such as `mode`, `sandbox`, and
   `writes_artifacts_to`.
 

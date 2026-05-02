@@ -4,12 +4,12 @@
     {
       "id": "code-map",
       "summary": "Adds a lightweight code-map discipline to agent development work.",
-      "description": "Prompts agents to inspect or update a compact project code map before implementation, then report whether the map was used.",
+      "description": "Prompts agents to inspect or update a compact project code map before implementation, then reports whether the map was used through a managed prompt-module mutation set.",
       "versions": [
         {
-          "version": "0.1.0",
-          "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/code-map-0.1.0.tar.gz",
-          "sha256": "511daa565d91a2d3068a45be9353004aac8585ea0ba70de97aa199f5ea9bc6c0"
+          "version": "0.1.1",
+          "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/code-map-0.1.1.tar.gz",
+          "sha256": "eac95143e8a3c46263f0593c8e403b52ca9019b92fd81ed42a2001707e8749b3"
         }
       ]
     }
