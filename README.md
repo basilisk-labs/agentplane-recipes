@@ -1,10 +1,20 @@
 # agentplane-recipes
 
-Repository for Agent Plane recipes and the remote catalog (`index.json` + `index.json.sig`).
+Single source of truth for distributable AgentPlane recipes and catalog metadata (`index.json` + `index.json.sig`).
 
-## Layout
+AgentPlane scales when reusable practices are bundled as recipes. This repository stores those recipes as installable, reviewable packages.
+If you use AgentPlane, adding one recipe can reduce repetitive setup and make agent behavior more predictable across team members.
 
-```
+## Why use this repository
+
+- Keep operational practices in versioned assets instead of tribal knowledge.
+- Make onboarding of new contributors reproducible.
+- Enable fast rollout of workflow improvements through signed catalog releases.
+- Improve discoverability with clear metadata (`category`, `tags`, `status`, `min_agentplane_version`).
+
+## Repository layout
+
+```text
 index.json
 index.json.sig
 keys/
@@ -13,58 +23,57 @@ recipes/
 scripts/
 ```
 
-## Compatibility contract
+## What is a recipe here
 
-Recipes in this repository target the current AgentPlane project-overlay runtime:
+A recipe is a compact package that defines:
 
-- recipe manifests use `schema_version: "2"` and `kind: "project_overlay"`;
-- recipe agent and skill assets are markdown files;
-- executable scenario files include `task_template`;
-- prompt module assets use `schema_version: 1` and recipe-owned provenance;
-- `run_profile` is limited to runner-local hints such as `mode`, `sandbox`, and
-  `writes_artifacts_to`.
+- metadata for discoverability,
+- scenario-level behavior,
+- optional prompts/skills/tools used during execution,
+- compatibility and safety constraints.
+
+Use recipes to enforce consistency before implementation, during verification, and after release.
 
 ## Release workflow
 
-Run the release build locally:
+Run locally for a release build:
 
 ```bash
 node scripts/build-release.ts --tag v0.1.0
 ```
 
-This creates `dist/*.tar.gz`, updates `index.json`, and writes checksums. By default, archive URLs
-point at tracked `dist/` assets on the repository `main` branch so the catalog remains installable
-from the default remote index after the commit is published. Set `RECIPE_ARCHIVE_BASE_URL` when a
-release should point somewhere else, for example a GitHub Release asset base URL.
+This generates `dist/*.tar.gz`, updates `index.json`, and writes checksums. By default archive URLs point to tracked `dist/` files on `main` so the catalog remains installable after the commit is published.
 
-### Index signature
+Set `RECIPE_ARCHIVE_BASE_URL` only for alternative hosting.
 
-The catalog must be signed before publishing. The active production key id is `2026-05`.
-The public key is checked in under `keys/`; the private key must exist only as the
-`RECIPES_INDEX_SIGNING_PRIVATE_KEY` GitHub Actions secret in this repository.
+## Index signature
 
-For emergency local validation only, generate a signature with a temporary private-key file:
+The catalog is signed before publishing.
+Active production key id: `2026-05`.
+Public keys are kept in `keys/` and signing keys are never stored in repository files.
+
+For emergency local signing only:
 
 ```bash
 node scripts/sign-index.ts --key /path/to/private-key.pem --key-id 2026-05
 ```
 
-Do not store recipes signing private keys in `.env`, repository files, shell history, release
-artifacts, or local long-lived key paths. Rotate by creating a new Ed25519 key, storing the private
-key as the GitHub Actions secret, adding the public key to AgentPlane's trusted recipes keyring,
-signing `index.json` with the new `key_id`, and publishing a new AgentPlane CLI release before making
-that signature the default catalog signature.
+## Discoverability schema
 
-## Recipe metadata
+Each recipe entry can include:
 
-The catalog schema supports discoverability metadata:
+- `category` — broad topic bucket (`integration`, `observability`, `workflow`, etc.)
+- `tags` — practical filtering keywords
+- `keywords` — taxonomic hints
+- `status` — `active` / `stub` / other lifecycle states
+- `min_agentplane_version` — minimum compatible AgentPlane version
 
-- `category` — broad namespace (`observability`, `integration`, etc.).
-- `tags` — fine-grained keywords for search.
-- `keywords` — package-level taxonomy.
-- `min_agentplane_version` — minimum compatible AgentPlane version.
-- `status` — publication state (`active`, `stub`, etc.).
+Use these fields consistently so operators can filter recipes by stack, maturity, and compatibility.
 
-When running `node scripts/build-release.ts`, manifest metadata is copied into
-`dist/index.json` and `index.json` so package managers and humans can filter and
-evaluate recipes consistently.
+## Contribution checklist
+
+1. Keep manifest fields complete and explicit.
+2. Prefer small, composable recipes with clear scenario boundaries.
+3. Include compatibility constraints for non-trivial runtime requirements.
+4. Rebuild catalog assets and commit resulting tarballs and checksums.
+5. Validate that description and examples are written for actual users, not just maintainers.
