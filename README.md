@@ -40,14 +40,14 @@ release should point somewhere else, for example a GitHub Release asset base URL
 
 ### Index signature
 
-The catalog must be signed before publishing. The active production key id is `2026-05`.
+The catalog must be signed before publishing. The active production key id is `2026-06`.
 The public key is checked in under `keys/`; the private key must exist only as the
 `RECIPES_INDEX_SIGNING_PRIVATE_KEY` GitHub Actions secret in this repository.
 
 For emergency local validation only, generate a signature with a temporary private-key file:
 
 ```bash
-node scripts/sign-index.ts --key /path/to/private-key.pem --key-id 2026-05
+node scripts/sign-index.ts --key /path/to/private-key.pem --key-id 2026-06
 ```
 
 Do not store recipes signing private keys in `.env`, repository files, shell history, release
