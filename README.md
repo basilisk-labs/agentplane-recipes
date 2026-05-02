@@ -5,6 +5,7 @@ Repository for Agent Plane recipes and the remote catalog (`index.json` + `index
 ## Layout
 
 ```
+catalog.json
 index.json
 index.json.sig
 keys/
@@ -37,6 +38,9 @@ This creates `dist/*.tar.gz`, updates `index.json`, and writes checksums. By def
 point at tracked `dist/` assets on the repository `main` branch so the catalog remains installable
 from the default remote index after the commit is published. Set `RECIPE_ARCHIVE_BASE_URL` when a
 release should point somewhere else, for example a GitHub Release asset base URL.
+
+`catalog.json` is the explicit publication allowlist. `scripts/build-release.ts` only publishes
+recipe ids listed there, even if old or experimental recipe directories still exist under `recipes/`.
 
 ### Index signature
 

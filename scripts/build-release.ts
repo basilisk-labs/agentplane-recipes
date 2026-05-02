@@ -27,10 +27,16 @@ type Manifest = {
   prompt_mutation_sets?: { id: string; summary?: string }[];
 };
 
+type Catalog = {
+  schema_version: number;
+  recipes: string[];
+};
+
 const repoRoot = path.resolve(process.cwd(), path.dirname(new URL(import.meta.url).pathname), "..");
 const recipesDir = path.join(repoRoot, "recipes");
 const distDir = path.join(repoRoot, "dist");
 const indexPath = path.join(repoRoot, "index.json");
+const catalogPath = path.join(repoRoot, "catalog.json");
 
 const args = process.argv.slice(2);
 const tagFlagIndex = args.indexOf("--tag");
@@ -49,11 +55,32 @@ const archiveBaseUrl =
 rmSync(distDir, { recursive: true, force: true });
 mkdirSync(distDir, { recursive: true });
 
+const catalog = JSON.parse(readFileSync(catalogPath, "utf8")) as Catalog;
+if (catalog.schema_version !== 1) {
+  throw new Error(`Unsupported catalog schema_version: ${catalog.schema_version}`);
+}
+const publishedRecipeIds = catalog.recipes.map((id) => id.trim()).filter(Boolean);
+if (publishedRecipeIds.length !== new Set(publishedRecipeIds).size) {
+  throw new Error("catalog.json contains duplicate recipe ids");
+}
+for (const recipeId of publishedRecipeIds) {
+  if (recipeId.includes("/") || recipeId.includes("\\") || recipeId === "." || recipeId === "..") {
+    throw new Error(`Invalid recipe id in catalog.json: ${recipeId}`);
+  }
+}
+
 const recipes = [];
-for (const entry of readdirSync(recipesDir, { withFileTypes: true })) {
-  if (!entry.isDirectory()) continue;
-  const manifestPath = path.join(recipesDir, entry.name, "manifest.json");
+const recipeDirsWithManifests = new Set(
+  readdirSync(recipesDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name),
+);
+for (const recipeId of publishedRecipeIds) {
+  const manifestPath = path.join(recipesDir, recipeId, "manifest.json");
   const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as Manifest;
+  if (manifest.id !== recipeId) {
+    throw new Error(`Recipe id mismatch: catalog=${recipeId}, manifest=${manifest.id}`);
+  }
   const filename = `${manifest.id}-${manifest.version}.tar.gz`;
   const outPath = path.join(distDir, filename);
   execFileSync("tar", ["-czf", outPath, "-C", recipesDir, manifest.id], {
@@ -87,6 +114,11 @@ for (const entry of readdirSync(recipesDir, { withFileTypes: true })) {
     ],
   });
   writeFileSync(path.join(distDir, `${filename}.sha256`), `${sha256}  ${filename}\n`);
+}
+for (const recipeId of recipeDirsWithManifests) {
+  if (!publishedRecipeIds.includes(recipeId)) {
+    console.warn(`Skipping unpublished recipe directory: ${recipeId}`);
+  }
 }
 
 const index = { schema_version: 1, recipes };

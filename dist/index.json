@@ -112,7 +112,7 @@
         {
           "version": "0.1.1",
           "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/code-map-0.1.1.tar.gz",
-          "sha256": "b5284d223cda0733ce91c8b10d18cace8c058ac2e1d76caed1248e60966a366f",
+          "sha256": "4dafd4405677f90579a3c9a651eaa66324bb33f78c8404c7f90bf4634aad6620",
           "min_agentplane_version": "0.4.1",
           "tags": [
             "code",
