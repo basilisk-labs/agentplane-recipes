@@ -5,11 +5,26 @@ import path from "node:path";
 
 type Manifest = {
   schema_version: string;
+  kind: string;
   id: string;
   version: string;
   name: string;
   summary: string;
   description: string;
+  tags?: string[];
+  compatibility?: {
+    min_agentplane_version?: string;
+    manifest_api_version?: string;
+    scenario_api_version?: string;
+    runtime_api_version?: string;
+    platforms?: string[];
+    repo_types?: string[];
+  };
+  skills?: { id: string; summary?: string }[];
+  agents?: { id: string; display_name?: string; role?: string; summary?: string }[];
+  scenarios?: { id: string; name?: string; summary?: string; required_inputs?: string[]; artifacts?: string[] }[];
+  prompt_modules?: { id: string; summary?: string }[];
+  prompt_mutation_sets?: { id: string; summary?: string }[];
 };
 
 const repoRoot = path.resolve(process.cwd(), path.dirname(new URL(import.meta.url).pathname), "..");
@@ -48,9 +63,28 @@ for (const entry of readdirSync(recipesDir, { withFileTypes: true })) {
   const url = `${archiveBaseUrl.replace(/\/+$/u, "")}/${filename}`;
   recipes.push({
     id: manifest.id,
+    name: manifest.name,
+    kind: manifest.kind,
     summary: manifest.summary,
     description: manifest.description,
-    versions: [{ version: manifest.version, url, sha256 }],
+    tags: manifest.tags ?? [],
+    compatibility: manifest.compatibility ?? {},
+    assets: {
+      skills: manifest.skills ?? [],
+      agents: manifest.agents ?? [],
+      scenarios: manifest.scenarios ?? [],
+      prompt_modules: manifest.prompt_modules ?? [],
+      prompt_mutation_sets: manifest.prompt_mutation_sets ?? [],
+    },
+    versions: [
+      {
+        version: manifest.version,
+        url,
+        sha256,
+        min_agentplane_version: manifest.compatibility?.min_agentplane_version,
+        tags: manifest.tags ?? [],
+      },
+    ],
   });
   writeFileSync(path.join(distDir, `${filename}.sha256`), `${sha256}  ${filename}\n`);
 }
