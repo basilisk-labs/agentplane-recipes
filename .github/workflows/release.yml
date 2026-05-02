@@ -27,11 +27,11 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           gh api -X PATCH /repos/basilisk-labs/agentplane-recipes \
-            -f description="Recipe index repository for AgentPlane ecosystem recipes and installers." \
-            -f homepage="https://github.com/basilisk-labs/agentplane-recipes"
+            -f description="Signed recipe catalog for reusable AgentPlane workflows and development practices" \
+            -f homepage="https://agentplane.org"
           gh api -X PUT /repos/basilisk-labs/agentplane-recipes/topics \
             -H "Accept: application/vnd.github+json" \
-            -f names='["agentplane","recipes","tooling","cli","agentic-ai"]'
+            -f names='["agentic-ai","agentplane","cli","developer-tools","recipes","workflow"]'
 
       - name: Build release assets
         run: |
