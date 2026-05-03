@@ -112,12 +112,139 @@
         {
           "version": "0.1.1",
           "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/code-map-0.1.1.tar.gz",
-          "sha256": "4dafd4405677f90579a3c9a651eaa66324bb33f78c8404c7f90bf4634aad6620",
+          "sha256": "eb5c1c3e11d6e473fc93121633920f0b2f730cfbedf51aa4498799036cbba028",
           "min_agentplane_version": "0.4.1",
           "tags": [
             "code",
             "documentation",
             "agent-behavior"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "llm-wiki",
+      "name": "LLM Wiki",
+      "kind": "project_overlay",
+      "summary": "Adds an agent-maintained project wiki with raw-source ingestion, query routing, and stale-input guardrails.",
+      "description": "Prompts agents to maintain a project-local llm-wiki namespace with an input inbox, immutable raw archive, structured wiki pages, index-based retrieval, and an explicit assimilation stop rule before unrelated task work.",
+      "tags": [
+        "documentation",
+        "knowledge-base",
+        "agent-behavior",
+        "retrieval"
+      ],
+      "compatibility": {
+        "min_agentplane_version": "0.4.1",
+        "manifest_api_version": "1",
+        "scenario_api_version": "1",
+        "runtime_api_version": "1",
+        "platforms": [
+          "darwin",
+          "linux"
+        ],
+        "repo_types": [
+          "generic"
+        ]
+      },
+      "assets": {
+        "skills": [
+          {
+            "id": "llm-wiki-discipline",
+            "summary": "Maintains a project-local LLM wiki from raw incoming sources.",
+            "file": "skills/llm-wiki-discipline.md"
+          }
+        ],
+        "agents": [
+          {
+            "id": "llm-wiki-operator",
+            "display_name": "LLM Wiki Operator",
+            "role": "executor",
+            "summary": "Owns wiki initialization, source assimilation, index maintenance, and query retrieval discipline.",
+            "skills": [
+              "llm-wiki-discipline"
+            ],
+            "tools": [],
+            "file": "agents/llm-wiki-operator.md"
+          }
+        ],
+        "scenarios": [
+          {
+            "id": "llm-wiki",
+            "name": "Initialize or Assimilate LLM Wiki",
+            "summary": "Create the llm-wiki structure or assimilate incoming source files before project work continues.",
+            "description": "Use this when a repository needs an agent-maintained wiki, when llm-wiki/_input contains unprocessed files, or when project knowledge must be structured before answering or implementation.",
+            "use_when": [
+              "The project has no llm-wiki namespace yet.",
+              "llm-wiki/_input or the configured input directory contains unprocessed files.",
+              "A request depends on project knowledge that should be routed through llm-wiki/index.md."
+            ],
+            "avoid_when": [
+              "The task is unrelated and the configured input directory is empty.",
+              "The repository deliberately does not want a tracked wiki namespace."
+            ],
+            "required_inputs": [
+              "wiki_root",
+              "input_dir"
+            ],
+            "outputs": [
+              "wiki_root",
+              "input_dir",
+              "assimilated_files",
+              "updated_index"
+            ],
+            "permissions": [
+              "fs.read",
+              "fs.write"
+            ],
+            "artifacts": [
+              "llm-wiki/index.md",
+              "llm-wiki/log.md",
+              "llm-wiki/_config.json"
+            ],
+            "agents_involved": [
+              "llm-wiki-operator"
+            ],
+            "skills_used": [
+              "llm-wiki-discipline"
+            ],
+            "tools_used": [],
+            "run_profile": {
+              "mode": "analysis",
+              "sandbox": "workspace-write",
+              "writes_artifacts_to": [
+                "llm-wiki/"
+              ]
+            },
+            "file": "scenarios/llm-wiki.json"
+          }
+        ],
+        "prompt_modules": [
+          {
+            "id": "llm-wiki-discipline",
+            "summary": "Recipe-owned policy module for LLM wiki source assimilation and retrieval discipline.",
+            "file": "prompt-modules/llm-wiki-discipline.json"
+          }
+        ],
+        "prompt_mutation_sets": [
+          {
+            "id": "llm-wiki-policy-validator",
+            "summary": "Requires the LLM wiki policy module to be present when the recipe is active.",
+            "file": "prompt-modules/llm-wiki-mutations.json"
+          }
+        ]
+      },
+      "versions": [
+        {
+          "version": "0.1.0",
+          "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/llm-wiki-0.1.0.tar.gz",
+          "sha256": "d091816486077f41acfdd3f405140fe197df21f414a30af53e2b54fd5df817ce",
+          "min_agentplane_version": "0.4.1",
+          "tags": [
+            "documentation",
+            "knowledge-base",
+            "agent-behavior",
+            "retrieval"
           ]
         }
       ]
