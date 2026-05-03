@@ -3,139 +3,121 @@
   "recipes": [
     {
       "id": "code-map",
-      "version": "0.1.0",
       "name": "Code Map",
+      "kind": "project_overlay",
       "summary": "Adds a lightweight code-map discipline to agent development work.",
-      "description": "Prompts agents to inspect or update a compact project code map before implementation, then report whether the map was used.",
+      "description": "Prompts agents to inspect or update a compact project code map before implementation, then reports whether the map was used through a managed prompt-module mutation set.",
       "tags": [
         "code",
         "documentation",
         "agent-behavior"
       ],
+      "compatibility": {
+        "min_agentplane_version": "0.4.1",
+        "manifest_api_version": "1",
+        "scenario_api_version": "1",
+        "runtime_api_version": "1",
+        "platforms": [
+          "darwin",
+          "linux"
+        ],
+        "repo_types": [
+          "generic"
+        ]
+      },
+      "assets": {
+        "skills": [
+          {
+            "id": "code-map-discipline",
+            "summary": "Keeps a concise project code map aligned with implementation work.",
+            "file": "skills/code-map-discipline.md"
+          }
+        ],
+        "agents": [
+          {
+            "id": "code-map-operator",
+            "display_name": "Code Map Operator",
+            "role": "executor",
+            "summary": "Applies the code-map discipline during coding and verification tasks.",
+            "skills": [
+              "code-map-discipline"
+            ],
+            "tools": [],
+            "file": "agents/code-map-operator.md"
+          }
+        ],
+        "scenarios": [
+          {
+            "id": "code-map",
+            "name": "Create or Refresh Code Map",
+            "summary": "Create or refresh a compact project code map before implementation.",
+            "description": "Use this when a task touches multiple code areas or when the repository lacks a current map of entry points, runtime surfaces, and verification commands.",
+            "use_when": [
+              "A coding task spans multiple modules or ownership boundaries.",
+              "A new agent needs a quick map of the project's runtime surfaces.",
+              "A change depends on understanding entry points and verification commands."
+            ],
+            "avoid_when": [
+              "The task is a one-line change with an obvious local owner.",
+              "The repository already has a current code map for the touched area."
+            ],
+            "required_inputs": [
+              "target_paths"
+            ],
+            "outputs": [
+              "code_map_path",
+              "mapped_surfaces",
+              "verification_commands"
+            ],
+            "permissions": [
+              "fs.read",
+              "fs.write"
+            ],
+            "artifacts": [
+              "docs/code-map.md"
+            ],
+            "agents_involved": [
+              "code-map-operator"
+            ],
+            "skills_used": [
+              "code-map-discipline"
+            ],
+            "tools_used": [],
+            "run_profile": {
+              "mode": "analysis",
+              "sandbox": "workspace-write",
+              "writes_artifacts_to": [
+                "docs/code-map.md"
+              ]
+            },
+            "file": "scenarios/code-map.json"
+          }
+        ],
+        "prompt_modules": [
+          {
+            "id": "code-map-discipline",
+            "summary": "Recipe-owned policy module for code-map discipline.",
+            "file": "prompt-modules/code-map-discipline.json"
+          }
+        ],
+        "prompt_mutation_sets": [
+          {
+            "id": "code-map-gateway-binding",
+            "summary": "Registers the code-map policy module in the managed prompt graph.",
+            "file": "prompt-modules/code-map-mutations.json"
+          }
+        ]
+      },
       "versions": [
         {
-          "version": "0.1.0",
-          "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/code-map-0.1.0.tar.gz",
-          "sha256": "7f11007190e33a8cd27293d952f9cffd479dc45c405d32837505337f7728694d",
+          "version": "0.1.1",
+          "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/code-map-0.1.1.tar.gz",
+          "sha256": "4dafd4405677f90579a3c9a651eaa66324bb33f78c8404c7f90bf4634aad6620",
+          "min_agentplane_version": "0.4.1",
           "tags": [
             "code",
             "documentation",
             "agent-behavior"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "dev-guard",
-      "version": "0.1.0",
-      "name": "Dev Guard",
-      "summary": "Preflight checks for safe local AgentPlane development sessions.",
-      "description": "Provides a lightweight scenario set for agentplane contributors: checks toolchain availability, branch hygiene, and quick quality gates before code changes.",
-      "homepage": "https://agentplane.org",
-      "repository": "https://github.com/basilisk-labs/agentplane-recipes",
-      "license": "MIT",
-      "keywords": [
-        "agentplane",
-        "development",
-        "preflight",
-        "quality",
-        "local-workflow"
-      ],
-      "category": "workflow",
-      "tags": [
-        "agentplane-dev",
-        "preflight",
-        "verification",
-        "contributors"
-      ],
-      "status": "active",
-      "min_agentplane_version": "0.4.1",
-      "versions": [
-        {
-          "version": "0.1.0",
-          "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/dev-guard-0.1.0.tar.gz",
-          "sha256": "3a43178949ed6edb4ee2215d1f55badea759628d777242a27536bbef508be378",
-          "tags": [
-            "agentplane-dev",
-            "preflight",
-            "verification",
-            "contributors"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "redmine",
-      "version": "0.1.0",
-      "name": "Redmine",
-      "summary": "Redmine backend integration.",
-      "description": "Enables Redmine task backend support and sync commands.",
-      "homepage": "https://www.redmine.org",
-      "repository": "https://github.com/basilisk-labs/agentplane-recipes",
-      "license": "MIT",
-      "keywords": [
-        "agentplane",
-        "redmine",
-        "task",
-        "integration",
-        "recipes"
-      ],
-      "category": "integration",
-      "tags": [
-        "redmine",
-        "task-backend",
-        "sync",
-        "issue-tracker"
-      ],
-      "status": "stub",
-      "min_agentplane_version": "0.4.1",
-      "versions": [
-        {
-          "version": "0.1.0",
-          "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/redmine-0.1.0.tar.gz",
-          "sha256": "9f673735964ddf366fb92c618bf505b3031c72de3d2686fb568165a46f640a1d",
-          "tags": [
-            "redmine",
-            "task-backend",
-            "sync",
-            "issue-tracker"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "viewer",
-      "version": "0.1.0",
-      "name": "Viewer",
-      "summary": "Local viewer for task artifacts.",
-      "description": "Adds a lightweight viewer for task artifacts and reports.",
-      "homepage": "https://agentplane.org",
-      "repository": "https://github.com/basilisk-labs/agentplane-recipes",
-      "license": "MIT",
-      "keywords": [
-        "agentplane",
-        "task",
-        "viewer",
-        "recipes",
-        "cli"
-      ],
-      "category": "observability",
-      "tags": [
-        "viewer",
-        "local-ui",
-        "debugging"
-      ],
-      "status": "active",
-      "min_agentplane_version": "0.4.1",
-      "versions": [
-        {
-          "version": "0.1.0",
-          "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/viewer-0.1.0.tar.gz",
-          "sha256": "696fd6aba55e1f370175ebb63f1a7ce8ef6e4adadb4704071356c1e80fd0d749",
-          "tags": [
-            "viewer",
-            "local-ui",
-            "debugging"
           ]
         }
       ]

@@ -49,7 +49,7 @@ jobs:
           trap 'rm -f "$key_path"' EXIT
           umask 077
           printf '%s\n' "$RECIPES_INDEX_SIGNING_PRIVATE_KEY" > "$key_path"
-          node scripts/sign-index.ts --key "$key_path" --key-id 2026-05
+          node scripts/sign-index.ts --key "$key_path" --key-id 2026-06
           cp index.json.sig dist/index.json.sig
 
       - name: Upload release assets

@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "recipe_id": "code-map",
+  "mutations": [
+    {
+      "id": "code-map.bind.policy-to-gateway-load-rules",
+      "op": "bind_module",
+      "reason": "Register the code-map policy module as an active recipe-owned dependency of the gateway load-rules graph without directly editing AGENTS.md.",
+      "source": {
+        "owner": {
+          "kind": "recipe",
+          "recipe_id": "code-map",
+          "version": "0.1.1"
+        },
+        "provenance": {
+          "source_kind": "recipe_asset",
+          "source_ref": "prompt-modules/code-map-mutations.json",
+          "fragment_id": "recipe.code-map.mutation.bind_policy_to_gateway_load_rules",
+          "recipe_id": "code-map",
+          "recipe_version": "0.1.1"
+        }
+      },
+      "binding": {
+        "id": "code-map.requires.gateway-load-rules",
+        "kind": "requires",
+        "from": "recipe.code-map/policy/.agentplane/policy/body/code-map-discipline",
+        "to": "framework/gateway/AGENTS.md/load_rules/gateway.agents.load_rules.load.rules",
+        "required": true
+      }
+    },
+    {
+      "id": "code-map.validator.policy-module-present",
+      "op": "add_validator",
+      "reason": "Fail prompt graph compilation if the active code-map recipe no longer contributes its policy module.",
+      "source": {
+        "owner": {
+          "kind": "recipe",
+          "recipe_id": "code-map",
+          "version": "0.1.1"
+        },
+        "provenance": {
+          "source_kind": "recipe_asset",
+          "source_ref": "prompt-modules/code-map-mutations.json",
+          "fragment_id": "recipe.code-map.mutation.validator_policy_module_present",
+          "recipe_id": "code-map",
+          "recipe_version": "0.1.1"
+        }
+      },
+      "validator": {
+        "id": "code-map.policy-module-present",
+        "phase": "compile",
+        "kind": "required_module",
+        "target": {
+          "address": "recipe.code-map/policy/.agentplane/policy/body/code-map-discipline"
+        },
+        "required": true
+      }
+    }
+  ]
+}
