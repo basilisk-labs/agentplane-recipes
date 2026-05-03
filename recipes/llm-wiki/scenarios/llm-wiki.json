@@ -1,0 +1,93 @@
+{
+  "schema_version": "1",
+  "id": "llm-wiki",
+  "goal": "Initialize or assimilate a project-local LLM wiki that preserves raw inputs and routes future answers through an index.",
+  "task_template": {
+    "title": "Initialize or assimilate LLM wiki",
+    "description": "Create the llm-wiki namespace or process pending input files into structured wiki pages while preserving originals under raw.",
+    "owner": "CODER",
+    "priority": "med",
+    "tags": ["llm-wiki", "docs", "recipes"],
+    "verify": [
+      "test -d llm-wiki",
+      "test -d llm-wiki/raw",
+      "test -f llm-wiki/index.md",
+      "test -f llm-wiki/log.md"
+    ],
+    "doc": {
+      "summary": "Maintain an agent-readable project wiki with raw input preservation and index-based retrieval.",
+      "scope": "Initialize llm-wiki structure or assimilate only the files currently present in the configured input inbox.",
+      "plan": "Resolve wiki settings, inspect input files, preserve raw originals, update structured wiki pages, refresh index.md, append log.md, and verify the inbox is empty after assimilation.",
+      "verify_steps": "Confirm llm-wiki, raw, index.md, and log.md exist; confirm raw originals were preserved when inputs were processed; confirm index.md routes to relevant maintained pages.",
+      "rollback_plan": "Restore moved raw files and revert wiki page, index, config, and log changes created for the assimilation batch.",
+      "findings": "Record unresolved source conflicts, stale index entries, or inputs that could not be assimilated."
+    }
+  },
+  "inputs": {
+    "wiki_root": {
+      "type": "string",
+      "required": false,
+      "default": "llm-wiki",
+      "description": "Project-root relative wiki namespace."
+    },
+    "input_dir": {
+      "type": "string",
+      "required": false,
+      "default": "_input",
+      "description": "Directory name under wiki_root used for incoming raw material."
+    }
+  },
+  "outputs": {
+    "wiki_root": {
+      "type": "string",
+      "description": "The wiki namespace used for this task."
+    },
+    "input_dir": {
+      "type": "string",
+      "description": "The configured input directory name under wiki_root."
+    },
+    "assimilated_files": {
+      "type": "array",
+      "items": "string",
+      "description": "Input files processed and preserved under raw."
+    },
+    "updated_index": {
+      "type": "string",
+      "description": "Path to the refreshed wiki index."
+    }
+  },
+  "evidence": {
+    "required": true,
+    "files": ["llm-wiki/index.md", "llm-wiki/log.md"]
+  },
+  "steps": [
+    {
+      "id": "resolve-settings",
+      "summary": "Read or create `llm-wiki/_config.json` with `wiki_root` and `input_dir`, defaulting to `llm-wiki` and `_input`."
+    },
+    {
+      "id": "initialize-structure",
+      "summary": "Ensure `llm-wiki/`, `llm-wiki/raw/`, and `llm-wiki/<input_dir>/` exist."
+    },
+    {
+      "id": "inventory-inputs",
+      "summary": "List pending input files with path, type, size, and content summary before changing them."
+    },
+    {
+      "id": "preserve-raw",
+      "summary": "Move original input files into `llm-wiki/raw/` using a date or batch grouping that prevents name collisions."
+    },
+    {
+      "id": "curate-wiki",
+      "summary": "Extract reusable facts into topical wiki pages, avoiding duplicate dumps and marking gaps or uncertain claims."
+    },
+    {
+      "id": "refresh-index-log",
+      "summary": "Update `index.md` as the retrieval router and append `log.md` with the processed batch evidence."
+    },
+    {
+      "id": "verify-inbox",
+      "summary": "Confirm the configured input inbox is empty after successful assimilation."
+    }
+  ]
+}

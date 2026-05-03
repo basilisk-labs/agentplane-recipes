@@ -1,4 +1,4 @@
 {
   "schema_version": 1,
-  "recipes": ["code-map"]
+  "recipes": ["code-map", "llm-wiki"]
 }
