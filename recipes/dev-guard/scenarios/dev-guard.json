@@ -1,0 +1,10 @@
+{
+  "id": "dev-guard",
+  "goal": "Run a safe and fast preflight before local AgentPlane development.",
+  "checks": [
+    "repo_health",
+    "toolchain_status",
+    "branch_state",
+    "release_readiness"
+  ]
+}

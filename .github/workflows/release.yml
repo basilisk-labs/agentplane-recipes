@@ -22,6 +22,17 @@ jobs:
         with:
           node-version: "24"
 
+      - name: Sync repository metadata
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X PATCH /repos/basilisk-labs/agentplane-recipes \
+            -f description="Signed recipe catalog for reusable AgentPlane workflows and development practices" \
+            -f homepage="https://agentplane.org"
+          gh api -X PUT /repos/basilisk-labs/agentplane-recipes/topics \
+            -H "Accept: application/vnd.github+json" \
+            -f names='["agentic-ai","agentplane","cli","developer-tools","recipes","workflow"]'
+
       - name: Build release assets
         run: |
           node scripts/build-release.ts --tag "${{ github.ref_name }}"

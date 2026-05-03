@@ -1,0 +1,32 @@
+{
+  "schema_version": "1",
+  "id": "viewer",
+  "version": "0.1.0",
+  "name": "Viewer",
+  "summary": "Local viewer for task artifacts.",
+  "description": "Adds a lightweight viewer for task artifacts and reports.",
+  "homepage": "https://agentplane.org",
+  "repository": "https://github.com/basilisk-labs/agentplane-recipes",
+  "license": "MIT",
+  "keywords": ["agentplane", "task", "viewer", "recipes", "cli"],
+  "category": "observability",
+  "tags": ["viewer", "local-ui", "debugging"],
+  "status": "active",
+  "min_agentplane_version": "0.4.1",
+  "agents": [],
+  "tools": [
+    {
+      "id": "viewer-server",
+      "summary": "Serve tasks.html with task data API.",
+      "runtime": "node",
+      "entrypoint": "tools/viewer-server.mjs",
+      "permissions": ["network", "fs.read"]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "viewer",
+      "summary": "Launch the local tasks viewer."
+    }
+  ]
+}
