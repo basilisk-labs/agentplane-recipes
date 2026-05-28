@@ -248,6 +248,124 @@
           ]
         }
       ]
+    },
+    {
+      "id": "parallel-codex",
+      "name": "Parallel Codex Runners",
+      "kind": "project_overlay",
+      "summary": "Plan and supervise independent Codex task runners with AgentPlane run observability.",
+      "description": "Adds an operator recipe for splitting approved work into independent AgentPlane tasks, launching each through the Codex runner, and monitoring progress with task run status, inspect, and logs commands.",
+      "tags": [
+        "codex",
+        "parallelism",
+        "runner",
+        "orchestration",
+        "workflow"
+      ],
+      "compatibility": {
+        "min_agentplane_version": "0.6.10",
+        "manifest_api_version": "1",
+        "scenario_api_version": "1",
+        "runtime_api_version": "1",
+        "platforms": [
+          "darwin",
+          "linux"
+        ],
+        "repo_types": [
+          "generic"
+        ]
+      },
+      "assets": {
+        "skills": [
+          {
+            "id": "parallel-codex-discipline",
+            "summary": "Coordinates multiple independent Codex task runners without sharing lifecycle authority.",
+            "file": "skills/parallel-codex-discipline.md"
+          }
+        ],
+        "agents": [
+          {
+            "id": "parallel-codex-coordinator",
+            "display_name": "Parallel Codex Coordinator",
+            "role": "orchestrator",
+            "summary": "Splits approved work into independent runner tasks and monitors their run artifacts.",
+            "skills": [
+              "parallel-codex-discipline"
+            ],
+            "tools": [],
+            "file": "agents/parallel-codex-coordinator.md"
+          }
+        ],
+        "scenarios": [
+          {
+            "id": "parallel-codex",
+            "name": "Coordinate Parallel Codex Runners",
+            "summary": "Split safe work into independent AgentPlane tasks and supervise each Codex runner.",
+            "description": "Use this when a parent task has separable work packages that can run concurrently without writing the same files or sharing lifecycle authority.",
+            "use_when": [
+              "The parent scope can be split into independent child tasks with non-overlapping file ownership.",
+              "Each child can produce its own verification evidence and result manifest.",
+              "You need live progress visibility while several Codex runners execute."
+            ],
+            "avoid_when": [
+              "The work requires a single shared edit across the same files.",
+              "The task needs continuous human judgement before each child can proceed.",
+              "The workflow mode or policy requires one linear owner to perform all changes."
+            ],
+            "required_inputs": [
+              "parent_goal",
+              "candidate_slices",
+              "conflict_boundaries"
+            ],
+            "outputs": [
+              "child_task_ids",
+              "runner_run_ids",
+              "monitoring_commands",
+              "integration_order"
+            ],
+            "permissions": [
+              "fs.read",
+              "fs.write",
+              "process.spawn"
+            ],
+            "artifacts": [
+              "artifacts/parallel-codex-plan.md"
+            ],
+            "agents_involved": [
+              "parallel-codex-coordinator"
+            ],
+            "skills_used": [
+              "parallel-codex-discipline"
+            ],
+            "tools_used": [],
+            "run_profile": {
+              "mode": "execution",
+              "sandbox": "workspace-write",
+              "writes_artifacts_to": [
+                "artifacts/parallel-codex-plan.md"
+              ]
+            },
+            "file": "scenarios/parallel-codex.json"
+          }
+        ],
+        "prompt_modules": [],
+        "prompt_mutation_sets": []
+      },
+      "versions": [
+        {
+          "version": "0.1.0",
+          "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/parallel-codex-0.1.0.tar.gz",
+          "sha256": "311c06a53a834167052c63362894ec0b6fedf3513989c4c22097960d5b229d66",
+          "min_agentplane_version": "0.6.10",
+          "tags": [
+            "codex",
+            "parallelism",
+            "runner",
+            "orchestration",
+            "workflow"
+          ]
+        }
+      ]
     }
   ]
 }

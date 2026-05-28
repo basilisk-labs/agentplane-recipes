@@ -1,0 +1,91 @@
+{
+  "schema_version": "1",
+  "id": "parallel-codex",
+  "goal": "Coordinate multiple independent Codex task runners for a safely parallelizable AgentPlane goal.",
+  "task_template": {
+    "title": "Coordinate parallel Codex runner tasks",
+    "description": "Split the approved parent goal into independent child tasks, launch each through the Codex runner, monitor runner status/logs, and summarize integration order and blockers.",
+    "owner": "ORCHESTRATOR",
+    "priority": "med",
+    "tags": ["parallel-codex", "runner", "orchestration"],
+    "verify": [
+      "agentplane task run status <child-task-id>",
+      "agentplane task run inspect <child-task-id> --events 20",
+      "agentplane task run logs <child-task-id> --stream events --tail 20"
+    ],
+    "doc": {
+      "summary": "Use AgentPlane runner observability to coordinate several independent Codex task runners.",
+      "scope": "Only create child tasks when file ownership, lifecycle authority, and verification boundaries are explicit and non-overlapping.",
+      "plan": "Classify candidate work slices, reject conflicting slices, create approved child tasks, launch each with `agentplane task run`, monitor with `status`, `inspect`, and `logs`, then integrate only after all child results are verified.",
+      "verify_steps": "For every child task, record task id, run id, status command output, inspected recent events, log tail, result manifest status, and remaining integration blocker if any.",
+      "rollback_plan": "Stop launching new child runners, mark blocked child tasks with their conflict path set, and integrate only already verified non-conflicting work."
+    }
+  },
+  "inputs": {
+    "parent_goal": {
+      "type": "string",
+      "required": true,
+      "description": "The approved parent goal to split into child runner tasks."
+    },
+    "candidate_slices": {
+      "type": "array",
+      "items": "string",
+      "required": true,
+      "description": "Proposed independent work slices with expected outputs."
+    },
+    "conflict_boundaries": {
+      "type": "array",
+      "items": "string",
+      "required": true,
+      "description": "Files, task lifecycle actions, or shared resources each child must avoid unless explicitly assigned."
+    }
+  },
+  "outputs": {
+    "child_task_ids": {
+      "type": "array",
+      "items": "string",
+      "description": "Child AgentPlane task ids created for independent runner execution."
+    },
+    "runner_run_ids": {
+      "type": "array",
+      "items": "string",
+      "description": "Runner run ids returned by `agentplane task run` or discovered by `task run status`."
+    },
+    "monitoring_commands": {
+      "type": "array",
+      "items": "string",
+      "description": "Exact status, inspect, and logs commands used to monitor each child."
+    },
+    "integration_order": {
+      "type": "array",
+      "items": "string",
+      "description": "Safe order for reviewing, integrating, or blocking child outputs."
+    }
+  },
+  "steps": [
+    {
+      "id": "classify",
+      "summary": "Separate parent work into child slices with explicit owned paths, expected evidence, and stop rules."
+    },
+    {
+      "id": "reject-conflicts",
+      "summary": "Do not parallelize slices that share write paths, lifecycle authority, release/publish actions, or unresolved policy decisions."
+    },
+    {
+      "id": "create-child-tasks",
+      "summary": "Create one AgentPlane task per safe slice; include owned paths, forbidden paths, verification commands, and required result manifest fields."
+    },
+    {
+      "id": "launch-runners",
+      "summary": "Run `agentplane task run <task-id>` for each child and record run ids from status output."
+    },
+    {
+      "id": "monitor",
+      "summary": "Use `agentplane task run status`, `inspect --events`, and `logs --stream events --follow` to track every running child."
+    },
+    {
+      "id": "reconcile",
+      "summary": "Verify child results, block conflicting children, and integrate only outputs with clean evidence and non-overlapping diffs."
+    }
+  ]
+}
