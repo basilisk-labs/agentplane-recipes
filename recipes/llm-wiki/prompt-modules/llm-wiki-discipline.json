@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "address": {
+    "value": "recipe.llm-wiki/policy/.agentplane/policy/body/llm-wiki-discipline",
+    "namespace": "recipe.llm-wiki",
+    "surface": "policy",
+    "target": ".agentplane/policy",
+    "slot": "body",
+    "name": "llm-wiki-discipline"
+  },
+  "owner": {
+    "kind": "recipe",
+    "recipe_id": "llm-wiki",
+    "version": "0.1.0"
+  },
+  "title": "LLM Wiki Discipline",
+  "summary": "Require project-local LLM wiki ingestion, raw preservation, and index-first retrieval.",
+  "content_kind": "markdown",
+  "content": "## LLM Wiki Discipline\n\nGoal: maintain `llm-wiki/` as the project-local knowledge layer for agents.\n\nStorage contract:\n- Default structure is `llm-wiki/`, `llm-wiki/raw/`, and `llm-wiki/_input/`.\n- `llm-wiki/_config.json` may override the inbox folder with `input_dir`; resolve it as `llm-wiki/<input_dir>`.\n- Keep `llm-wiki/index.md` as the retrieval router and `llm-wiki/log.md` as append-only assimilation history.\n\nStartup stop rule:\n- At the start of each task, check the configured inbox for non-hidden files or non-empty directories.\n- If pending inputs exist and the active task is not assimilation, stop before unrelated work and propose assimilating those files first.\n\nAssimilation rule:\n- Preserve originals under `llm-wiki/raw/` before or while creating curated wiki pages.\n- Move reusable knowledge into topical pages under `llm-wiki/`; do not dump raw text into the wiki layer.\n- Update `index.md` and append `log.md` with processed sources, changed pages, and unresolved gaps.\n- Leave the inbox empty only after raw preservation and wiki updates are complete.\n\nQuery rule:\n- For project-knowledge requests, read `llm-wiki/index.md` first when present, then open only relevant indexed pages.\n- Cite wiki paths for facts derived from the wiki.\n- If the index is missing, stale, or insufficient, state that limitation and inspect the smallest relevant wiki subset.\n",
+  "mutability": "append_only",
+  "merge": {
+    "mode": "append",
+    "conflict": "keep_all",
+    "precedence": 660
+  },
+  "load": {
+    "recipe_ids": ["llm-wiki"]
+  },
+  "provenance": {
+    "source_kind": "recipe_asset",
+    "source_ref": "prompt-modules/llm-wiki-discipline.json",
+    "fragment_id": "recipe.llm-wiki.policy.body.llm_wiki_discipline",
+    "recipe_id": "llm-wiki",
+    "recipe_version": "0.1.0"
+  }
+}

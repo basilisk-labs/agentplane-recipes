@@ -1,0 +1,80 @@
+{
+  "schema_version": "2",
+  "kind": "project_overlay",
+  "id": "llm-wiki",
+  "version": "0.1.0",
+  "name": "LLM Wiki",
+  "summary": "Adds an agent-maintained project wiki with raw-source ingestion, query routing, and stale-input guardrails.",
+  "description": "Prompts agents to maintain a project-local llm-wiki namespace with an input inbox, immutable raw archive, structured wiki pages, index-based retrieval, and an explicit assimilation stop rule before unrelated task work.",
+  "tags": ["documentation", "knowledge-base", "agent-behavior", "retrieval"],
+  "compatibility": {
+    "min_agentplane_version": "0.4.1",
+    "manifest_api_version": "1",
+    "scenario_api_version": "1",
+    "runtime_api_version": "1",
+    "platforms": ["darwin", "linux"],
+    "repo_types": ["generic"]
+  },
+  "skills": [
+    {
+      "id": "llm-wiki-discipline",
+      "summary": "Maintains a project-local LLM wiki from raw incoming sources.",
+      "file": "skills/llm-wiki-discipline.md"
+    }
+  ],
+  "agents": [
+    {
+      "id": "llm-wiki-operator",
+      "display_name": "LLM Wiki Operator",
+      "role": "executor",
+      "summary": "Owns wiki initialization, source assimilation, index maintenance, and query retrieval discipline.",
+      "skills": ["llm-wiki-discipline"],
+      "tools": [],
+      "file": "agents/llm-wiki-operator.md"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "llm-wiki",
+      "name": "Initialize or Assimilate LLM Wiki",
+      "summary": "Create the llm-wiki structure or assimilate incoming source files before project work continues.",
+      "description": "Use this when a repository needs an agent-maintained wiki, when llm-wiki/_input contains unprocessed files, or when project knowledge must be structured before answering or implementation.",
+      "use_when": [
+        "The project has no llm-wiki namespace yet.",
+        "llm-wiki/_input or the configured input directory contains unprocessed files.",
+        "A request depends on project knowledge that should be routed through llm-wiki/index.md."
+      ],
+      "avoid_when": [
+        "The task is unrelated and the configured input directory is empty.",
+        "The repository deliberately does not want a tracked wiki namespace."
+      ],
+      "required_inputs": ["wiki_root", "input_dir"],
+      "outputs": ["wiki_root", "input_dir", "assimilated_files", "updated_index"],
+      "permissions": ["fs.read", "fs.write"],
+      "artifacts": ["llm-wiki/index.md", "llm-wiki/log.md", "llm-wiki/_config.json"],
+      "agents_involved": ["llm-wiki-operator"],
+      "skills_used": ["llm-wiki-discipline"],
+      "tools_used": [],
+      "run_profile": {
+        "mode": "analysis",
+        "sandbox": "workspace-write",
+        "writes_artifacts_to": ["llm-wiki/"]
+      },
+      "file": "scenarios/llm-wiki.json"
+    }
+  ],
+  "prompt_modules": [
+    {
+      "id": "llm-wiki-discipline",
+      "summary": "Recipe-owned policy module for LLM wiki source assimilation and retrieval discipline.",
+      "file": "prompt-modules/llm-wiki-discipline.json"
+    }
+  ],
+  "prompt_mutation_sets": [
+    {
+      "id": "llm-wiki-policy-validator",
+      "summary": "Requires the LLM wiki policy module to be present when the recipe is active.",
+      "file": "prompt-modules/llm-wiki-mutations.json"
+    }
+  ]
+}

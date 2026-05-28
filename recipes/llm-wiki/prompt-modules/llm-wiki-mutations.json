@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "recipe_id": "llm-wiki",
+  "mutations": [
+    {
+      "id": "llm-wiki.validator.policy-module-present",
+      "op": "add_validator",
+      "reason": "Fail prompt graph compilation if the active llm-wiki recipe no longer contributes its policy module.",
+      "source": {
+        "owner": {
+          "kind": "recipe",
+          "recipe_id": "llm-wiki",
+          "version": "0.1.0"
+        },
+        "provenance": {
+          "source_kind": "recipe_asset",
+          "source_ref": "prompt-modules/llm-wiki-mutations.json",
+          "fragment_id": "recipe.llm-wiki.mutation.validator_policy_module_present",
+          "recipe_id": "llm-wiki",
+          "recipe_version": "0.1.0"
+        }
+      },
+      "validator": {
+        "id": "llm-wiki.policy-module-present",
+        "phase": "compile",
+        "kind": "required_module",
+        "target": {
+          "address": "recipe.llm-wiki/policy/.agentplane/policy/body/llm-wiki-discipline"
+        },
+        "required": true
+      }
+    }
+  ]
+}
