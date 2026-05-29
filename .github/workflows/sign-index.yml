@@ -1,0 +1,48 @@
+name: Sign recipes index
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sign-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Sign recipes index
+        env:
+          RECIPES_INDEX_SIGNING_PRIVATE_KEY: ${{ secrets.RECIPES_INDEX_SIGNING_PRIVATE_KEY }}
+        run: |
+          if [ -z "$RECIPES_INDEX_SIGNING_PRIVATE_KEY" ]; then
+            echo "RECIPES_INDEX_SIGNING_PRIVATE_KEY is required" >&2
+            exit 1
+          fi
+          key_path="$RUNNER_TEMP/recipes-index-signing-key.pem"
+          trap 'rm -f "$key_path"' EXIT
+          umask 077
+          printf '%s\n' "$RECIPES_INDEX_SIGNING_PRIVATE_KEY" > "$key_path"
+          node scripts/sign-index.ts --key "$key_path" --key-id 2026-06
+          cp index.json.sig dist/index.json.sig
+
+      - name: Commit signature
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.json.sig dist/index.json.sig
+          if git diff --cached --quiet; then
+            echo "Recipes index signature is already current."
+            exit 0
+          fi
+          git commit -m "chore(recipes): sign current catalog index"
+          git push
