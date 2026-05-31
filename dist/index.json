@@ -123,6 +123,139 @@
       ]
     },
     {
+      "id": "hermes-agentplane",
+      "name": "Hermes Agentplane",
+      "kind": "project_overlay",
+      "summary": "Adds prompt policy for Agentplane-owned Hermes Kanban worker lanes.",
+      "description": "Prompts agents and Hermes worker profiles to treat Hermes as dispatch/run lifecycle and Agentplane as engineering task truth, using route-gated execution, comment-first projection, and terminal evidence gates.",
+      "tags": [
+        "hermes",
+        "kanban",
+        "multi-agent",
+        "agent-behavior"
+      ],
+      "compatibility": {
+        "min_agentplane_version": "0.6.13",
+        "manifest_api_version": "1",
+        "scenario_api_version": "1",
+        "runtime_api_version": "1",
+        "platforms": [
+          "darwin",
+          "linux"
+        ],
+        "repo_types": [
+          "generic"
+        ]
+      },
+      "assets": {
+        "skills": [
+          {
+            "id": "hermes-agentplane-worker-lane",
+            "summary": "Keeps Hermes worker lanes route-gated and Agentplane-owned.",
+            "file": "skills/hermes-agentplane-worker-lane.md"
+          }
+        ],
+        "agents": [
+          {
+            "id": "hermes-agentplane-supervisor",
+            "display_name": "Hermes Agentplane Supervisor",
+            "role": "executor",
+            "summary": "Supervises one Hermes claim by executing at most one allowlisted Agentplane route step.",
+            "skills": [
+              "hermes-agentplane-worker-lane"
+            ],
+            "tools": [],
+            "file": "agents/hermes-agentplane-supervisor.md"
+          }
+        ],
+        "scenarios": [
+          {
+            "id": "hermes-agentplane-lane",
+            "name": "Dispatch Agentplane Task Through Hermes",
+            "summary": "Project an Agentplane task into Hermes Kanban and supervise it through the native Hermes adapter.",
+            "description": "Use this when a repository wants Hermes to own queueing, claims, retries, dashboard, and handoff while Agentplane remains the canonical owner of plan, worktree, verification, finish, and ACR evidence.",
+            "use_when": [
+              "Hermes Kanban is the operational board for multi-agent work.",
+              "Agentplane branch_pr should protect concurrent repo work.",
+              "A worker lane must complete Hermes cards only after Agentplane terminal evidence validates."
+            ],
+            "avoid_when": [
+              "The repository does not run Hermes Kanban.",
+              "The task is a single local direct-mode helper run.",
+              "The integration cannot provide Hermes lifecycle callbacks or a dispatcher lane."
+            ],
+            "required_inputs": [
+              "task_id",
+              "hermes_board",
+              "hermes_assignee"
+            ],
+            "outputs": [
+              "hermes_card_projection",
+              "agentplane_task_id",
+              "verification_evidence",
+              "acr_path"
+            ],
+            "permissions": [
+              "fs.read",
+              "process.exec"
+            ],
+            "artifacts": [
+              ".agentplane/tasks/<task-id>/README.md",
+              ".agentplane/tasks/<task-id>/acr.json"
+            ],
+            "agents_involved": [
+              "hermes-agentplane-supervisor"
+            ],
+            "skills_used": [
+              "hermes-agentplane-worker-lane"
+            ],
+            "tools_used": [
+              "agentplane hermes enqueue",
+              "agentplane hermes supervise",
+              "agentplane hermes lifecycle",
+              "agentplane hermes doctor"
+            ],
+            "run_profile": {
+              "mode": "execution",
+              "sandbox": "workspace-write",
+              "writes_artifacts_to": [
+                ".agentplane/tasks/<task-id>/"
+              ]
+            },
+            "file": "scenarios/hermes-agentplane-lane.json"
+          }
+        ],
+        "prompt_modules": [
+          {
+            "id": "hermes-agentplane-worker-lane",
+            "summary": "Recipe-owned policy module for Hermes Agentplane worker lanes.",
+            "file": "prompt-modules/hermes-agentplane-worker-lane.json"
+          }
+        ],
+        "prompt_mutation_sets": [
+          {
+            "id": "hermes-agentplane-gateway-binding",
+            "summary": "Registers Hermes Agentplane worker lane discipline in the managed prompt graph.",
+            "file": "prompt-modules/hermes-agentplane-mutations.json"
+          }
+        ]
+      },
+      "versions": [
+        {
+          "version": "0.1.0",
+          "url": "https://raw.githubusercontent.com/basilisk-labs/agentplane-recipes/main/dist/hermes-agentplane-0.1.0.tar.gz",
+          "sha256": "89e1905016a6e34e29ae9d25151d57fd2060dcdef65baf86ae1993ad813e9490",
+          "min_agentplane_version": "0.6.13",
+          "tags": [
+            "hermes",
+            "kanban",
+            "multi-agent",
+            "agent-behavior"
+          ]
+        }
+      ]
+    },
+    {
       "id": "llm-wiki",
       "name": "LLM Wiki",
       "kind": "project_overlay",

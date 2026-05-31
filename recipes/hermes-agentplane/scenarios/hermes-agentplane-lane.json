@@ -1,0 +1,81 @@
+{
+  "schema_version": "1",
+  "id": "hermes-agentplane-lane",
+  "goal": "Dispatch an Agentplane task through a Hermes Kanban worker lane without transferring engineering task truth to Hermes.",
+  "task_template": {
+    "title": "Dispatch Agentplane task through Hermes",
+    "description": "Create a Hermes Kanban projection for the Agentplane task and supervise it with the Agentplane-owned Hermes adapter.",
+    "owner": "CODER",
+    "priority": "med",
+    "tags": ["hermes", "agentplane", "kanban"],
+    "verify": [
+      "agentplane hermes doctor --json",
+      "agentplane hermes supervise <task-id> --json"
+    ],
+    "doc": {
+      "summary": "Use Hermes as the durable dispatch/run substrate and Agentplane as the Git-visible engineering evidence substrate.",
+      "scope": "Create or operate a Hermes projection for an existing Agentplane task.",
+      "plan": "Check adapter readiness, render or create the Hermes projection, supervise one route-gated step per claim, and close Hermes only after Agentplane terminal gates.",
+      "verify_steps": "Confirm doctor output is healthy, supervise output refuses raw shell, Hermes lifecycle comments point to Agentplane evidence, and terminal completion requires DONE plus verification ok plus ACR validation.",
+      "rollback_plan": "Archive or block stale Hermes projections; do not rewrite Agentplane task truth based on Hermes state."
+    }
+  },
+  "inputs": {
+    "task_id": {
+      "type": "string",
+      "required": true,
+      "description": "Agentplane task id to project into Hermes."
+    },
+    "hermes_board": {
+      "type": "string",
+      "required": true,
+      "description": "Hermes Kanban board slug."
+    },
+    "hermes_assignee": {
+      "type": "string",
+      "required": true,
+      "description": "Hermes worker lane assignee, such as agentplane-coder."
+    }
+  },
+  "outputs": {
+    "hermes_card_projection": {
+      "type": "object",
+      "description": "Provider-safe card body and metadata from `agentplane hermes enqueue`."
+    },
+    "agentplane_task_id": {
+      "type": "string",
+      "description": "Canonical Agentplane task id."
+    },
+    "verification_evidence": {
+      "type": "array",
+      "items": "string",
+      "description": "Verification checks recorded in Agentplane and projected to Hermes comments."
+    },
+    "acr_path": {
+      "type": "string",
+      "description": "Path to the validated Agent Change Record."
+    }
+  },
+  "steps": [
+    {
+      "id": "doctor",
+      "summary": "Run `agentplane hermes doctor --json` and verify branch_pr, binaries, lane registry, and Hermes environment readiness."
+    },
+    {
+      "id": "enqueue",
+      "summary": "Render or create the Hermes card projection with `agentplane hermes enqueue <task-id> --json`."
+    },
+    {
+      "id": "supervise",
+      "summary": "Run `agentplane hermes supervise <task-id> --execute-step --json` for one allowlisted route step."
+    },
+    {
+      "id": "project",
+      "summary": "Write structured Hermes comments before block or complete using `agentplane hermes lifecycle comment`."
+    },
+    {
+      "id": "close",
+      "summary": "Complete Hermes only after Agentplane DONE, verification ok, branch_pr finish, and local ACR validation."
+    }
+  ]
+}

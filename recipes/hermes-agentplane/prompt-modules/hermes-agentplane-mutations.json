@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "recipe_id": "hermes-agentplane",
+  "mutations": [
+    {
+      "id": "hermes-agentplane.bind.policy-to-gateway-load-rules",
+      "op": "bind_module",
+      "reason": "Register the Hermes Agentplane worker lane module as an active recipe-owned dependency of the gateway load-rules graph without editing AGENTS.md directly.",
+      "source": {
+        "owner": {
+          "kind": "recipe",
+          "recipe_id": "hermes-agentplane",
+          "version": "0.1.0"
+        },
+        "provenance": {
+          "source_kind": "recipe_asset",
+          "source_ref": "prompt-modules/hermes-agentplane-mutations.json",
+          "fragment_id": "recipe.hermes_agentplane.mutation.bind_policy_to_gateway_load_rules",
+          "recipe_id": "hermes-agentplane",
+          "recipe_version": "0.1.0"
+        }
+      },
+      "binding": {
+        "id": "hermes-agentplane.requires.gateway-load-rules",
+        "kind": "requires",
+        "from": "recipe.hermes-agentplane/policy/.agentplane/policy/body/hermes-agentplane-worker-lane",
+        "to": "framework/gateway/AGENTS.md/load_rules/gateway.agents.load_rules.load.rules",
+        "required": true
+      }
+    },
+    {
+      "id": "hermes-agentplane.validator.policy-module-present",
+      "op": "add_validator",
+      "reason": "Fail prompt graph compilation if the active Hermes Agentplane recipe no longer contributes its worker lane policy module.",
+      "source": {
+        "owner": {
+          "kind": "recipe",
+          "recipe_id": "hermes-agentplane",
+          "version": "0.1.0"
+        },
+        "provenance": {
+          "source_kind": "recipe_asset",
+          "source_ref": "prompt-modules/hermes-agentplane-mutations.json",
+          "fragment_id": "recipe.hermes_agentplane.mutation.validator_policy_module_present",
+          "recipe_id": "hermes-agentplane",
+          "recipe_version": "0.1.0"
+        }
+      },
+      "validator": {
+        "id": "hermes-agentplane.policy-module-present",
+        "phase": "compile",
+        "kind": "required_module",
+        "target": {
+          "address": "recipe.hermes-agentplane/policy/.agentplane/policy/body/hermes-agentplane-worker-lane"
+        },
+        "required": true
+      }
+    }
+  ]
+}

@@ -1,4 +1,4 @@
 {
   "schema_version": 1,
-  "recipes": ["code-map", "llm-wiki", "parallel-codex"]
+  "recipes": ["code-map", "hermes-agentplane", "llm-wiki", "parallel-codex"]
 }

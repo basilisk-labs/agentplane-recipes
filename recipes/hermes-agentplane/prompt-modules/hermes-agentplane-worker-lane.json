@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "address": {
+    "value": "recipe.hermes-agentplane/policy/.agentplane/policy/body/hermes-agentplane-worker-lane",
+    "namespace": "recipe.hermes-agentplane",
+    "surface": "policy",
+    "target": ".agentplane/policy",
+    "slot": "body",
+    "name": "hermes-agentplane-worker-lane"
+  },
+  "owner": {
+    "kind": "recipe",
+    "recipe_id": "hermes-agentplane",
+    "version": "0.1.0"
+  },
+  "title": "Hermes Agentplane Worker Lane",
+  "summary": "Require Hermes worker lanes to treat Agentplane as engineering task truth and Hermes as dispatch/run projection.",
+  "content_kind": "markdown",
+  "content": "## Hermes Agentplane Worker Lane\n\n- Hermes owns dispatch/run lifecycle: queue, assignee, claim, run id, retries, crash detection, comments, dashboard, and human handoff.\n- Agentplane owns engineering task lifecycle: task README/frontmatter, plan approval, branch/worktree, verification, PR/integration, finish, and ACR evidence.\n- Use `agentplane hermes doctor --json` before lane execution and stop on adapter readiness failures.\n- Use `agentplane hermes supervise <task-id> --json` to inspect route state; use `--execute-step` only for one allowlisted route step per Hermes claim.\n- Never execute raw shell copied from route text. Classify route output into typed Agentplane commands or block with an unsupported-route reason.\n- Write a structured `agentplane hermes lifecycle comment` before every Hermes block or complete transition.\n- `agentplane hermes lifecycle complete` is allowed only after Agentplane task status is `DONE`, verification is `ok`, branch_pr integration/finish is complete, and ACR validation passes.\n- Treat Hermes board state as projection-only during reconcile; never infer Agentplane `DONE` from Hermes `done`.\n",
+  "mutability": "append_only",
+  "merge": {
+    "mode": "append",
+    "conflict": "keep_all",
+    "precedence": 680
+  },
+  "load": {
+    "recipe_ids": [
+      "hermes-agentplane"
+    ]
+  },
+  "provenance": {
+    "source_kind": "recipe_asset",
+    "source_ref": "prompt-modules/hermes-agentplane-worker-lane.json",
+    "fragment_id": "recipe.hermes_agentplane.policy.body.worker_lane",
+    "recipe_id": "hermes-agentplane",
+    "recipe_version": "0.1.0"
+  }
+}
