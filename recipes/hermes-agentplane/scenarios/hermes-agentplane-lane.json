@@ -16,7 +16,7 @@
       "summary": "Use Hermes as the durable dispatch/run substrate and Agentplane as the Git-visible engineering evidence substrate.",
       "scope": "Create or operate a Hermes projection for an existing Agentplane task.",
       "plan": "Check adapter readiness, render or create the Hermes projection, supervise one route-gated step per claim, and close Hermes only after Agentplane terminal gates.",
-      "verify_steps": "Confirm doctor output is healthy, supervise output refuses raw shell, Hermes lifecycle comments point to Agentplane evidence, and terminal completion requires DONE plus verification ok plus ACR validation.",
+      "verify_steps": "Confirm doctor output is healthy, supervise output refuses raw shell, enqueue/supervise return hermes_comment_projection with runner visibility commands, Hermes lifecycle comments point to Agentplane evidence, and terminal completion requires DONE plus verification ok plus ACR validation.",
       "rollback_plan": "Archive or block stale Hermes projections; do not rewrite Agentplane task truth based on Hermes state."
     }
   },
@@ -71,7 +71,7 @@
     },
     {
       "id": "project",
-      "summary": "Write structured Hermes comments before block or complete using `agentplane hermes lifecycle comment`."
+      "summary": "Post the `hermes_comment_projection` packet before block or complete using `agentplane hermes lifecycle comment`."
     },
     {
       "id": "close",
